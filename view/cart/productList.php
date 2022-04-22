@@ -4,8 +4,13 @@ echo "<table>
             <th>Product</th>
             <th>Quantity</th>
         </tr>";
-foreach ($cart->getProductList as $product => $quantity) {
-    echo "<tr><td>$product</td><td>$quantity<td></tr>";
+if (!$cart) {
+    echo "</table><h1>You don't have any products in your cart yet</h1>";
 }
-echo "</table>";
+else {
+    foreach ($cart->getProductList as $product => $quantity) {
+        echo "<tr><td>$product</td><td>$quantity<td></tr>";
+    }
+    echo "</table>";
+}
 ?>
