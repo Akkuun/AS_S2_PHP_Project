@@ -23,14 +23,16 @@ session_start();
 
 
     <div id="RightPart">
+        <form method="post" action="../Controller/connexion.php">
         <div id="Title">Member Login</div>
         <div><input type="text" placeholder="Email or login" class="Information" name="mail_login"></div>
         <div><img id="icon_login" src="../src/images/PageIcons/avatar_icon.png"></div>
         <div><input type="password" placeholder="Password" name="password" class="Information"></div>
         <div><img id="icon_password" src="../src/images/PageIcons/email_icon.jpg"></div>
-        <input type="button" value="Log in" id="buttonLogin">
+        <input  type="submit" value="Log in" id="buttonLogin"/>
         <div id="forgottenID"> forgotten Username / Password ?</div>
         <div id="createAccount">Create your account -></div>
+        </form>
     </div>
 
 </div>
