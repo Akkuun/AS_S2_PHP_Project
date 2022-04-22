@@ -8,7 +8,7 @@ class Conf{
         'password' => 'webas'
     ];
 
-    private static $debug = False;
+    private static $debug = True;
 
     public static function getDebug(){
         return self::$debug;
@@ -29,5 +29,4 @@ class Conf{
     public static function getPassword(){
         return self::$databases['password'];
     }
-
 }

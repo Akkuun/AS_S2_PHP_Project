@@ -65,6 +65,8 @@ class ModelCart {
             $req_prep->execute([$idClient,]);
             $req_prep->setFetchMode(PDO::FETCH_CLASS, 'ModelCart');
             $cart = $req_prep->fetch();
+            if (empty($cart))
+                return false;
             $req_prep = Model::getPDO()->prepare($sql2);
             $req_prep->execute([$cart->idCart,]);
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
