@@ -1,13 +1,13 @@
 <?php
 require_once File::build_path(array("model", "ModelCart.php")); // chargement du modèle
 class ControllerCart {
-    
+
     private static function getPathToView() {
         return File::build_path(array("view", "view.php"));
     }
 
     public static function read() {
-        $idClient = $_GET['idClient'];
+        $idClient = $_SESSION["id"];
         $cart = ModelCart::getCartByClientId($idClient);
         $controller='cart';
         $view='productList';
