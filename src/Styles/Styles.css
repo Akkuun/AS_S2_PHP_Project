@@ -5,7 +5,7 @@
 
 #CenterSquare {
     margin-top: 11%;
-    margin-left: 33%;
+    margin-left: 30%;
     width: 45%;
     height: 65%;
     display: flex;
@@ -76,6 +76,21 @@
 
 #createAccount {
     margin-top: 10%;
+}
+#icon_login{
+  position: absolute;
+    top: 38%;
+    left: 44%;
+
+    height: 3%;
+    width: 2%;
+}
+#icon_password{
+    position: absolute;
+    top: 44%;
+    left: 44%;
+    height: 3%;
+    width: 2%;
 }
 
 
