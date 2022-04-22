@@ -71,5 +71,4 @@ class ModelProduct{
 
         return $products;
     }
-
 }
