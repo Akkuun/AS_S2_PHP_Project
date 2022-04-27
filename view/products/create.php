@@ -16,15 +16,39 @@
         </p>
         <p>
             <label for="price">Price</label> :
-            <input type="number" placeholder="49.99" name="price" id="price">
+            <input type="number" placeholder="49.99" name="price" id="price" required>
         </p>
         <p>
             <label for="quantity">Quantity</label> :
-            <input type="number" placeholder="49.99" name="quantity" id="quantity">
+            <input type="number" placeholder="10" name="quantity" id="quantity" required>
         </p>
         <p>
             <label for="image">Image</label> :
-            <input type="file" placeholder="49.99" name="image" id="image">
+            <input type="text" placeholder="name.format" name="image" id="image" required>
+        </p>
+        <p>
+            <label>Select the origin : </label>
+            <!-- Insert code which is looking for all the origins in the database -->
+            <!-- name of the input mark-up has to be 'orgigin' -->
+        </p>
+        <p>
+            <label>Select the category : </label>
+            <!-- Insert code which is looking for all the categories in the database -->
+            <!-- name of the input mark_up has to be 'category' -->
+
+            <?php
+            require_once File::build_path(['model', 'ModelCategory.php']);
+
+            $categories = ModelCategory::getAllCategories();
+
+            foreach ($categories as $key => $category){
+                $nameToLower = htmlspecialchars(strtolower($category->getName()));
+                echo "<div>";
+                echo "<input type='radio' id='".$nameToLower."' name='category' value='".$category->getId()."'>";
+                echo "<label for='".$nameToLower."'>".htmlspecialchars($category->getName())."</label>";
+                echo "</div>";
+                }
+            ?>
         </p>
         <p>
             <input type="submit" value="Envoyer" />

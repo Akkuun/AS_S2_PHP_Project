@@ -13,8 +13,7 @@
 </header>
 <body>
 <?php
-$filepath = File::build_path(["view", $controller, "$view.php"]);
-require $filepath;
+require File::build_path(["view", self::$controller, "$view.php"]);
 ?>
 </body>
 <footer>
