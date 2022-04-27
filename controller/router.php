@@ -10,7 +10,7 @@ if ($controller == "products"){
     $controller_class = "ControllerCart";
 }
 
-$action =  isset($_GET['action']) ? $_GET['action'] : "create";
+$action =  isset($_GET['action']) ? $_GET['action'] : "readAll";
 
 if (class_exists($controller_class) &&
     in_array($action, get_class_methods($controller_class))){

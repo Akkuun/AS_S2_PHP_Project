@@ -30,6 +30,20 @@
             <label>Select the origin : </label>
             <!-- Insert code which is looking for all the origins in the database -->
             <!-- name of the input mark-up has to be 'orgigin' -->
+
+            <?php
+            require_once File::build_path(['model', 'ModelOrigin.php']);
+
+            $origins = ModelOrigin::getAllOrigins();
+
+            foreach ($origins as $key => $origin){
+                $nameToLower = htmlspecialchars(strtolower($origin->getName()));
+                echo "<div>";
+                echo "<input type='radio' id='".$nameToLower."' name='origin' value='".$origin->getId()."'>";
+                echo "<label for='".$nameToLower."'>".htmlspecialchars($origin->getName())."</label>";
+                echo "</div>";
+            }
+            ?>
         </p>
         <p>
             <label>Select the category : </label>

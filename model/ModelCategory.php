@@ -4,15 +4,11 @@ require_once File::build_path(['model','Model.php']);
 class ModelCategory{
     private $id;
     private $name;
-    private $creator;
-    private $releaseDate;
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
             $this->id = $datas['id'];
             $this->name = $datas['name'];
-            $this->creator = $datas['creator'];
-            $this->releaseDate = $datas['releaseDate'];
         }
     }
 
@@ -24,16 +20,6 @@ class ModelCategory{
     public function getName()
     {
         return $this->name;
-    }
-
-    public function getCreator()
-    {
-        return $this->creator;
-    }
-
-    public function getReleaseDate()
-    {
-        return $this->releaseDate;
     }
 
     public static function getAllCategories(){
