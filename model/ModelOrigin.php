@@ -5,14 +5,13 @@ class ModelOrigin{
     private $id;
     private $name;
     private $creator;
-    private $realeaseDate;
+    private $releaseDate;
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
-            $this->id = $datas['id'];
             $this->name = $datas['name'];
             $this->creator = $datas['creator'];
-            $this->realeaseDate = $datas['releaseDate'];
+            $this->releaseDate = $datas['releaseDate'];
         }
     }
 
@@ -31,9 +30,9 @@ class ModelOrigin{
         return $this->creator;
     }
 
-    public function getRealeaseDate()
+    public function getReleaseDate()
     {
-        return $this->realeaseDate;
+        return $this->releaseDate;
     }
 
     public static function getAllOrigins(){
@@ -43,6 +42,11 @@ class ModelOrigin{
         $origins = $query->fetchAll();
 
         return $origins;
+    }
+
+    public function save(){
+        $query = Model::getPDO()->prepare('INSERT INTO origins (name, creator, releaseDate) VALUES (?, ?, ?)');
+        $query->execute([$this->name, $this->creator, $this->releaseDate]);
     }
 
 

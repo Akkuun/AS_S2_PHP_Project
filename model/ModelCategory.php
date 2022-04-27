@@ -7,14 +7,8 @@ class ModelCategory{
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
-            $this->id = $datas['id'];
             $this->name = $datas['name'];
         }
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getName()
@@ -29,5 +23,10 @@ class ModelCategory{
         $categories = $query->fetchAll();
 
         return $categories;
+    }
+
+    public function save(){
+        $query = Model::getPDO()->prepare('INSERT INTO categories (name) VALUES (?)');
+        $query->execute([$this->name]);
     }
 }

@@ -1,13 +1,24 @@
 <?php
-require_once File::build_path(array("controller", "ControllerCart.php"));
+require_once File::build_path(['controller', 'ControllerCart.php']);
 require_once File::build_path(['controller', 'ControllerProduct.php']);
+require_once File::build_path(['controller', 'ControllerCategory.php']);
+require_once File::build_path(['controller', 'ControllerOrigin.php']);
 
 $controller = isset($_GET['controller']) ? $_GET['controller'] : "products";
 
-if ($controller == "products"){
-    $controller_class = "ControllerProduct";
-} else if ($controller == "cart"){
-    $controller_class = "ControllerCart";
+switch ($controller) {
+    case "products" :
+        $controller_class = "ControllerProduct";
+        break;
+    case "cart" :
+        $controller_class = "ControllerCart";
+        break;
+    case "categories" :
+        $controller_class = "ControllerCategory";
+        break;
+    case "origins" :
+        $controller_class = "ControllerOrigin";
+        break;
 }
 
 $action =  isset($_GET['action']) ? $_GET['action'] : "readAll";
