@@ -1,3 +1,5 @@
+<?php
+?>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -5,6 +7,54 @@
 </head>
 </html>
 <header>
+    <?php
+    if (!isset($_SESSION['login'])){
+        echo "<form method='post' action='?action=logIn&controller=customers'>
+                <table>
+                    <tr>
+                        <td>
+                            <label for='login'>Login :</label>
+                        </td>
+                        <td>
+                            <label for='password'>Password :</label>                   
+                        </td>
+                    </tr>
+                    <tr>    
+                        <td>                
+                            <input type='text' id='login' name='login'>
+                        </td>
+                        <td>
+                            <input type='password' id='password' name='password'>
+                        <td>
+                        <td>
+                            <input type='submit' value='Log in'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Not registered ? <a href='?controller=customers&action=signUp'>Click here</a>
+                        </td>
+                    </tr>
+                </table>
+               </form>";
+    } else {
+        require_once File::build_path(['model', 'ModelCustomer.php']);
+
+        echo "<table>";
+        echo "<tr>
+                <td><img src=''></td>
+              </tr>
+              <tr>
+                <td>".htmlspecialchars($_SESSION['login'])."</td>
+                <td><a href='?controller=customers&action=logOut'>Log out</a></td>
+              </tr>";
+        echo "</table>";
+    }
+    if (isset($_SESSION['error'])){
+        echo "<p>".htmlspecialchars($_SESSION['error'])."</p>";
+        unset($_SESSION['error']);
+    }
+    ?>
     <nav>
         <ul>
             <li><a href="?action=readAll">Products</a></li>
