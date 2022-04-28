@@ -79,9 +79,24 @@ class ModelProduct{
         return $products;
     }
 
+    public static function getProductByName($name){
+        $query = Model::getPDO()->prepare('SELECT name, description, price, image, quantity FROM products
+            WHERE name = ?');
+        $query->execute([$name]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
+        $product = $query->fetchAll();
+
+        if (empty($product)){
+            $product[0] = false;
+        }
+
+        return $product[0];
+    }
+
     public static function getAllProductByCategory($idCategory){
         $query = Model::getPDO()->prepare('SELECT * FROM products
-            WHERE idCategory = ?');
+            WHERE idCategory = ?
+            ORDER BY name');
         $query->execute([$idCategory]);
         $query->setFetchMode(PDO::FETCH_CLASS, "ModelProduct");
         $products = $query->fetchAll();

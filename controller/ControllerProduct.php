@@ -62,4 +62,14 @@ class ControllerProduct{
             header("Location: index.php?action=readAll");
         }
     }
+
+    public static function read(){
+        $name = $_GET['name'];
+        $product = ModelProduct::getProductByName($name);
+
+        $view = 'detail';
+        $pageTitle = $name;
+
+        require_once File::build_path(['view', 'view.php']);
+    }
 }
