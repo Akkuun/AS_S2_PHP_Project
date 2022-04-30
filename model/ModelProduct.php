@@ -41,26 +41,62 @@ class ModelProduct{
         return $this->image;
     }
 
+    public function getCategory(){
+        $query = Model::getPDO()->prepare('SELECT c.name FROM categories c 
+            JOIN products p ON p.idCategory = c.id
+            WHERE p.name = ?');
+        $query->execute([$this->name]);
+        $category = $query->fetch();
+
+        return $category[0];
+    }
+
+    public function getOrigin(){
+        $query = Model::getPDO()->prepare('SELECT o.name FROM origins o
+            JOIN products p ON p.idOrigin = o.id
+            WHERE p.name = ?');
+        $query->execute([$this->name]);
+        $origin = $query->fetch();
+
+        return $origin[0];
+    }
+
     public function save($idOrigin, $idCategory){
-        $query = Model::getPDO()->prepare('INSERT INTO Products
+        $query = Model::getPDO()->prepare('INSERT INTO products
             (name, description, price, image, idOrigin, idCategory, quantity)
             VALUES (?, ?, ?, ?, ?, ?, ?)');
 
         $query->execute([$this->name, $this->description, $this->price,
-                        $this->image, $idOrigin, $idCategory, $this->quantity]);
+                         $this->image, $idOrigin, $idCategory, $this->quantity]);
     }
 
-    public static function getAllProduct(){
-        $query = Model::getPDO()->query('SELECT * FROM Products');
+    public static function getAllProducts(){
+        $query = Model::getPDO()->prepare('SELECT name, description, price, image, quantity FROM products');
         $query->execute();
+        $query->setFetchMode(PDO::FETCH_CLASS, "ModelProduct");
         $products = $query->fetchAll();
 
         return $products;
     }
 
+    public static function getProductByName($name){
+        $query = Model::getPDO()->prepare('SELECT name, description, price, image, quantity FROM products
+            WHERE name = ?');
+        $query->execute([$name]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
+        $product = $query->fetchAll();
+
+        if (empty($product)){
+            $product[0] = false;
+        }
+
+        return $product[0];
+    }
+
     public static function getAllProductByCategory($idCategory){
-        $query = Model::getPDO()->prepare('SELECT * FROM Products
-            WHERE idCategory = ?');
+        $query = Model::getPDO()->prepare('SELECT * FROM products
+            WHERE idCategory = ?
+            ORDER BY name');
         $query->execute([$idCategory]);
         $query->setFetchMode(PDO::FETCH_CLASS, "ModelProduct");
         $products = $query->fetchAll();
