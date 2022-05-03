@@ -5,10 +5,15 @@ class ControllerCategory{
     static $controller = "categories";
 
     public static function create(){
-        $view = 'create';
-        $pageTitle = 'Create a new Category';
+        if ($_SESSION['type'] == 'admin'){
+            $view = 'create';
+            $pageTitle = 'Create a new Category';
 
-        require_once File::build_path(['view', 'view.php']);
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 
     public static function created(){

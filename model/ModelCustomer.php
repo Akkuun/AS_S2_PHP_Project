@@ -5,6 +5,7 @@ class ModelCustomer{
     private $idClient;
     private $login;
     private $email;
+    private $type;
     private $password;
     private $address;
     private $phone;
@@ -13,12 +14,12 @@ class ModelCustomer{
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
-            $this->idClient = $datas['idClient'];
             $this->login = $datas['login'];
+            $this->type = $datas['type'];
+            $this->email = $datas['email'];
             $this->password = $datas['password'];
             $this->address = $datas['address'];
             $this->phone = $datas['phone'];
-            $this->profileImage = $datas['profileImage'];
         }
     }
 
@@ -30,6 +31,11 @@ class ModelCustomer{
     public function getLogin()
     {
         return $this->login;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function getEmail()
@@ -74,6 +80,15 @@ class ModelCustomer{
         }
 
         return $customer[0];
+    }
+
+    public function save(){
+        $query = Model::getPDO()->prepare("INSERT INTO clients
+            (login, type, email, password, address, phone, profileImage)
+            VALUES(?, ?, ?, ?, ?, ?, ?)");
+
+        $query->execute([$this->login, $this->type, $this->email,$this->password,
+            $this->address, $this->phone, $this->profileImage]);
     }
 
 

@@ -14,10 +14,15 @@ class ControllerProduct{
     }
 
     public static function create(){
-        $view = 'create';
-        $pageTitle = 'Create a new Product';
+        if ($_SESSION['type'] == 'admin'){
+            $view = 'create';
+            $pageTitle = 'Create a new Product';
 
-        require_once File::build_path(['view', 'view.php']);
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 
     public static function created(){

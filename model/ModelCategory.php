@@ -16,6 +16,10 @@ class ModelCategory{
         return $this->name;
     }
 
+    public function getId(){
+        return $this->id;
+    }
+
     public static function getAllCategories(){
         $query = Model::getPDO()->query('SELECT * FROM categories');
         $query->execute();
