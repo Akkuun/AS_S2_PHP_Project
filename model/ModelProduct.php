@@ -2,6 +2,7 @@
 require_once File::build_path(['model','Model.php']);
 
 class ModelProduct{
+    private $id;
     private $name;
     private $description;
     private $price;
@@ -10,12 +11,19 @@ class ModelProduct{
 
     public function __construct($datas = NULL){
         if(!is_null($datas)){
+            if (isset($datas['id'])){
+                $this->id = $datas['id'];
+            }
             $this->name = $datas['name'];
             $this->description = $datas['description'];
             $this->price = $datas['price'];
             $this->image = $datas['image'];
             $this->quantity = $datas['quantity'];
         }
+    }
+
+    public function getId(){
+        return $this->id;
     }
 
     public function getName(){
@@ -71,7 +79,7 @@ class ModelProduct{
     }
 
     public static function getAllProducts(){
-        $query = Model::getPDO()->prepare('SELECT name, description, price, image, quantity FROM products');
+        $query = Model::getPDO()->prepare('SELECT id, name, description, price, image, quantity FROM products');
         $query->execute();
         $query->setFetchMode(PDO::FETCH_CLASS, "ModelProduct");
         $products = $query->fetchAll();
@@ -80,9 +88,23 @@ class ModelProduct{
     }
 
     public static function getProductByName($name){
-        $query = Model::getPDO()->prepare('SELECT name, description, price, image, quantity FROM products
+        $query = Model::getPDO()->prepare('SELECT id, name, description, price, image, quantity FROM products
             WHERE name = ?');
         $query->execute([$name]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
+        $product = $query->fetchAll();
+
+        if (empty($product)){
+            $product[0] = false;
+        }
+
+        return $product[0];
+    }
+
+    public static function getProductById($id){
+        $query = Model::getPDO()->prepare('SELECT id, name, description, price, image, quantity FROM products
+            WHERE id = ?');
+        $query->execute([$id]);
         $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
         $product = $query->fetchAll();
 

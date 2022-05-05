@@ -17,42 +17,35 @@ class ModelCart {
         $this->productList[$row->idProduct] = $row->quantity;
     }
    
-    public function addProduct($idProduct, $quantity) {
-        $values = array(
-            "q" => $quantity,
-            "cart" => $this->idCart,
-            "product" => $idProduct
-        );
-        if (isset($productList[$idProduct])) {
-            $productList[$idProduct] += $quantity;
-            $sql = "UPDATE cartRow SET quantity=quantity+:q WHERE idCart=:cart AND idProduct=:product";
-            try {
-                $req_prep = Model::getPDO()->prepare($sql);
-                $req_prep->execute($values);
+    public static function addProduct($idProduct, $quantity) {
+        $query = null;
+        if (isset($_SESSION['cart'][$idProduct])){
+            $_SESSION['cart'][$idProduct] += $quantity;
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL addQuantityCartRow(?, ? ,?)");
             }
-            catch(PDOException $e) {
-                return false;
+        } else {
+            $_SESSION['cart'][$idProduct] = $quantity;
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL insertIntoRow(?, ?, ?)");
             }
-            return true;
         }
-        else {
-            $productList[$idProduct] = $quantity;
-            $sql = "INSERT INTO cartRow VALUES(:cart,:product,:q);";
-            try {
-                $req_prep = Model::getPDO()->prepare($sql);
-                $req_prep->execute($values);
-            }
-            catch(PDOException $e) {
-                return false;
-            }
-            return true;
+
+        if (!is_null($query)){
+            $query->execute([
+                $_SESSION['idClient'],
+                $idProduct,
+                $quantity
+            ]);
         }
     }
    
-    public function __construct($data = array()) {
-        foreach ($data as $attribut => $valeur) {
-            if (property_exists($this, $attribut))
-                $this->$attribut = $valeur;
+    public function __construct($data = NULL) {
+        if (!is_null($data)) {
+            foreach ($data as $attribut => $valeur) {
+                if (property_exists($this, $attribut))
+                    $this->$attribut = $valeur;
+            }
         }
     }
 

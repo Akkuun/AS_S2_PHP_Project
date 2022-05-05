@@ -8,8 +8,6 @@ class ControllerCart {
     }
 
     public static function read() {
-        $idClient = $_SESSION["id"];
-        $cart = ModelCart::getCartByClientId($idClient);
         $view='productList';
         $pagetitle="Your shopping cart";
         require self::getPathToView();
@@ -19,6 +17,16 @@ class ControllerCart {
         $view='error';
         $pagetitle='Error';
         require self::getPathToView();
+    }
+
+    public static function addProduct(){
+        if (isset($_GET['idProduct'])){
+            $quantity = isset($_GET['q']) ? $_GET['q'] : 1;
+            ModelCart::addProduct($_GET['idProduct'], $quantity);
+        }
+
+        require_once File::build_path(['controller', 'ControllerProduct.php']);
+        ControllerProduct::readAll();
     }
 }
 ?>

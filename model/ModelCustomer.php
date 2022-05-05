@@ -14,6 +14,9 @@ class ModelCustomer{
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
+            if(isset($datas['idClient'])){
+                $this->idClient = $datas['idClient'];
+            }
             $this->login = $datas['login'];
             $this->type = $datas['type'];
             $this->email = $datas['email'];
@@ -64,7 +67,8 @@ class ModelCustomer{
     }
 
     public function getCart(){
-
+        require_once File::build_path(['model', 'ModelCart.php']);
+        $this->cart = ModelCart::getCartByClientId($this->idClient);
     }
 
     public static function login($login, $password){

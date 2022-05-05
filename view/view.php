@@ -58,6 +58,7 @@
     <nav>
         <ul>
             <li><a href="?action=readAll">Products</a></li>
+            <li><a href="?action=read&controller=cart">Cart</a></li>
         </ul>
     </nav>
 </header>

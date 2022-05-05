@@ -16,6 +16,7 @@ class ControllerCustomer{
                 $_SESSION['address'] = $customer->getAddress();
                 $_SESSION['phone'] = $customer->getPhone();
                 $_SESSION['profileImage'] = $customer->getProfileImage();
+                $_SESSION['cart'] = $customer->getCart();
             } else {
                 $_SESSION['error'] = "Identifiant ou mot de passe incorrect";
             }
