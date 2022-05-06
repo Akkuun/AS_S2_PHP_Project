@@ -59,6 +59,10 @@
         <ul>
             <li><a href="?action=readAll">Products</a></li>
             <li><a href="?action=read&controller=cart">Cart</a></li>
+            <?php if (isset($_SESSION['idClient'])){
+                echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
+            }
+            ?>
         </ul>
     </nav>
 </header>

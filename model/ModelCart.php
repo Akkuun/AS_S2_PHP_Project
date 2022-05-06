@@ -12,10 +12,6 @@ class ModelCart {
     public function getProductList() {
         return $this->productList;
     }
-
-    public function addRowToProductList($row) {
-        $this->productList[$row->idProduct] = $row->quantity;
-    }
    
     public static function addProduct($idProduct, $quantity) {
         $query = null;
@@ -27,7 +23,7 @@ class ModelCart {
         } else {
             $_SESSION['cart'][$idProduct] = $quantity;
             if (isset($_SESSION['idClient'])){
-                $query = Model::getPDO()->prepare("CALL insertIntoRow(?, ?, ?)");
+                $query = Model::getPDO()->prepare("CALL insertCartRow(?, ?, ?)");
             }
         }
 
@@ -51,7 +47,7 @@ class ModelCart {
 
     public static function getCartByClientId($idClient) {
         $sql = "SELECT * from carts WHERE idClient=?";
-        $sql2 = "SELECT * from cartRows WHERE idCart=?";
+        $sql2 = "SELECT * from cartRow WHERE idCart=?";
         
         try {
             $req_prep = Model::getPDO()->prepare($sql);	 
@@ -65,8 +61,9 @@ class ModelCart {
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $cartRowsTab = $req_prep->fetchAll();
             foreach($cartRowsTab as $row) {
-                $cart->addRowToProductList($row);
+                $finalCart[$row->idProduct] = $row->quantity;
             }
+            return $finalCart;
         }
         catch(PDOException $e) {
             if (Conf::getDebug()) {
@@ -77,7 +74,6 @@ class ModelCart {
             }
             die();
         }
-        return $cart;
     }
 }
 ?>

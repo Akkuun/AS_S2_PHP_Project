@@ -9,13 +9,13 @@ class ControllerCart {
 
     public static function read() {
         $view='productList';
-        $pagetitle="Your shopping cart";
+        $pageTitle="Your shopping cart";
         require self::getPathToView();
     }
 
     public static function error() {
         $view='error';
-        $pagetitle='Error';
+        $pageTitle='Error';
         require self::getPathToView();
     }
 

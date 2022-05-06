@@ -69,6 +69,7 @@ class ModelCustomer{
     public function getCart(){
         require_once File::build_path(['model', 'ModelCart.php']);
         $this->cart = ModelCart::getCartByClientId($this->idClient);
+        return $this->cart;
     }
 
     public static function login($login, $password){
@@ -89,10 +90,29 @@ class ModelCustomer{
     public function save(){
         $query = Model::getPDO()->prepare("INSERT INTO clients
             (login, type, email, password, address, phone, profileImage)
-            VALUES(?, ?, ?, ?, ?, ?, ?)");
+            VALUES(?, ?, ?, ?, ?, ?, ?); ");
 
         $query->execute([$this->login, $this->type, $this->email,$this->password,
             $this->address, $this->phone, $this->profileImage]);
+
+        $query = Model::getPDO()->prepare("CALL setCartOnSignUp(?)");
+        $query->execute([$this->login]);
+    }
+
+    public static function getClientById($id){
+        $query = Model::getPDO()->prepare("SELECT * FROM  clients
+            WHERE idClient = ?"
+            );
+        $query->execute([$id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelCustomer');
+
+        $customers = $query->fetchAll();
+
+        if (count($customers) == 0){
+            $customers[0] = false;
+        }
+        var_dump($customers[0]);
+        return $customers[0];
     }
 
 

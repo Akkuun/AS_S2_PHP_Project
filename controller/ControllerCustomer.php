@@ -84,4 +84,16 @@ class ControllerCustomer{
             }
         }
     }
+
+    public static function read(){
+        if (isset($_SESSION['idClient'])){
+            $view = 'profile';
+            $pageTitle = $_SESSION['login'];
+
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct']);
+            ControllerProduct::readAll();
+        }
+    }
 }
