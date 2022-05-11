@@ -21,6 +21,8 @@ if (empty($_SESSION['cart'])) {
             <td>".$quantity."</td>
             <td>".$product->getPrice()."</td>
             <td>".$quantity*$product->getPrice()."</td>
+            <td><a href='?action=addProduct&from=cart&controller=cart&idProduct=".$product->getId()."'>+</a></td>
+            <td><a href='?action=removeProduct&from=cart&controller=cart&idProduct=".$product->getId()."'>-</a></td>
             </tr>";
     }
     echo "</tbody></table>";

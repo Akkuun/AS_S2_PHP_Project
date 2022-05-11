@@ -35,6 +35,29 @@ class ModelCart {
             ]);
         }
     }
+
+    public static function removeProduct($idProduct, $quantity){
+        $query = null;
+        if (isset($_SESSION['cart'][$idProduct])){
+            $_SESSION['cart'][$idProduct] -= $quantity;
+
+            if ($_SESSION['cart'][$idProduct] <= 0){
+                unset($_SESSION['cart'][$idProduct]);
+            }
+
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL removeProduct(?, ? ,?)");
+            }
+        }
+
+        if (!is_null($query)){
+            $query->execute([
+                $_SESSION['idClient'],
+                $idProduct,
+                $quantity
+            ]);
+        }
+    }
    
     public function __construct($data = NULL) {
         if (!is_null($data)) {

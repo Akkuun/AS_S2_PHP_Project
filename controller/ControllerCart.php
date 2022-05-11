@@ -25,8 +25,30 @@ class ControllerCart {
             ModelCart::addProduct($_GET['idProduct'], $quantity);
         }
 
-        require_once File::build_path(['controller', 'ControllerProduct.php']);
-        ControllerProduct::readAll();
+        $from = isset($_GET['from']) ? $_GET['from'] : 'productList';
+
+        if ($from == 'cart'){
+            self::read();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
+    }
+
+    public static function removeProduct(){
+        if (isset($_GET['idProduct'])){
+            $quantity = isset($_GET['q']) ? $_GET['q'] : 1;
+            ModelCart::removeProduct($_GET['idProduct'], $quantity);
+        }
+
+        $from = isset($_GET['from']) ? $_GET['from'] : 'productList';
+
+        if ($from == 'cart'){
+            self::read();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 }
 ?>
