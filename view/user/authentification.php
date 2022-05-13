@@ -23,7 +23,7 @@ session_start();
 
 
     <div id="RightPart">
-        <form method="post" action="../../Controller/connexion.php">
+        <form method="post" action='?action=logIn&controller=customers'>
         <div id="Title">Member Login</div>
         <div><input type="text" placeholder="Email or login" class="Information" name="mail_login"></div>
         <div><img id="icon_login" src="../../src/images/PageIcons/avatar_icon.png"></div>
