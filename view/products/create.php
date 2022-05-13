@@ -7,7 +7,7 @@
         </p>
         <p>
             <label for="description">Description</label> :
-            <textarea type="text" placeholder="Rose" name="description" id="description">
+            <textarea type="text" name="description" id="description">
                 Unlock your thief skills,
                 Awake your true power,
                 Reveal your destiny,
