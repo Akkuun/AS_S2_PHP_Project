@@ -1,10 +1,12 @@
 <?php
-require_once  FIle::build_path(['model', 'ModelProduct.php']);
+require_once FIle::build_path(['model', 'ModelProduct.php']);
 
-class ControllerProduct{
+class ControllerProduct
+{
     static $controller = 'products';
 
-    public static function readAll(){
+    public static function readAll()
+    {
         $products = ModelProduct::getAllProducts();
 
         $view = 'productList';
@@ -13,8 +15,9 @@ class ControllerProduct{
         require_once File::build_path(['view', 'view.php']);
     }
 
-    public static function create(){
-        if ($_SESSION['type'] == 'admin'){
+    public static function create()
+    {
+        if ($_SESSION['type'] == 'admin') {
             $view = 'create';
             $pageTitle = 'Create a new Product';
 
@@ -25,7 +28,8 @@ class ControllerProduct{
         }
     }
 
-    public static function created(){
+    public static function created()
+    {
         /*
         if (isset($_FILES['image'])){
             $formatsAllowed = ['png', 'jpg', 'jpeg', 'gif'];
@@ -39,7 +43,7 @@ class ControllerProduct{
         }*/
 
         if (isset($_POST['name']) && isset($_POST['price'])
-            && isset($_POST['image']) && isset($_POST['category'])){
+            && isset($_POST['image']) && isset($_POST['category'])) {
             //move_uploaded_file($_FILES['image']['tmp_name'], File::build_path(['src', 'images', 'productsPictures', $_FILES['image']['name']]));
 
             $valuesToBind = [];
@@ -48,11 +52,13 @@ class ControllerProduct{
                 $valuesToBind[$key] = $value;
             }
 
-            if (!isset($valuesToBind['origin'])){
+            if (!isset($valuesToBind['origin'])) {
                 $valuesToBind['origin'] = null;
-            } if (!isset($valuesToBind['quantity'])){
+            }
+            if (!isset($valuesToBind['quantity'])) {
                 $valuesToBind['quantity'] = null;
-            } if (!isset($valuesToBind['description'])){
+            }
+            if (!isset($valuesToBind['description'])) {
                 $valuesToBind['description'] = null;
             }
 
@@ -68,7 +74,8 @@ class ControllerProduct{
         }
     }
 
-    public static function read(){
+    public static function read()
+    {
         $name = $_GET['name'];
         $product = ModelProduct::getProductByName($name);
 
@@ -77,4 +84,56 @@ class ControllerProduct{
 
         require_once File::build_path(['view', 'view.php']);
     }
-}
+
+
+    public static function filterByCategory()
+    {
+        $category = $_GET['category'];
+        $products = ModelProduct::getAllProductByCategory($category);
+        foreach ($products as $index => $value) {
+            echo
+                "<p>" . "<li>" . $value->getName() . "</li><li>" .
+                $value->getDescription() . "</li><li>" .
+                $value->getPrice() . "</li></p>";
+        }
+    }
+
+
+        public
+        static function updated()
+        {
+            if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description'])
+                && isset($_POST['price']) && isset($_POST['quantity']) && isset($_POST['image'])
+                && isset($_POST['origin']) && isset($_POST['category'])) {
+
+                $updatedProduct = new ModelProduct(['id' => $_POST['id'],
+                    'name' => $_POST['name'],
+                    'description' => $_POST['description'],
+                    'price' => $_POST['price'],
+                    'image' => $_POST['image'],
+                    'quantity' => $_POST['quantity']
+                ]);
+
+                $updatedProduct->update($_POST['origin'], $_POST['category']);
+                self::readAll();
+
+            }
+        }
+
+        public
+        static function update()
+        {
+            if ($_SESSION['type'] == 'admin') {
+                $name = $_GET['name'];
+                $product = ModelProduct::getProductByName($name);
+
+                $view = 'update';
+                $pageTitle = "Edit $name";
+
+                require_once File::build_path(['view', 'view.php']);
+            } else {
+                require_once File::build_path(['controller', 'ControllerProduct.php']);
+                ControllerProduct::readAll();
+            }
+        }
+    }

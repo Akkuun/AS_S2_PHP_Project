@@ -12,4 +12,5 @@ if (isset($products)){
         </ul>";
         echo "</div>";
     }
+
 }

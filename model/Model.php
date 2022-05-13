@@ -1,7 +1,8 @@
 <?php
     require_once File::build_path(['config', 'Conf.php']);
 
-    class Model{
+    class Model
+    {
         private static $pdo = NULL;
 
         private static function init()

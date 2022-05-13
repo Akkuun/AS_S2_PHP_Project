@@ -7,7 +7,6 @@ class ControllerCustomer{
     public static function logIn(){
         if (isset($_POST['login']) && isset($_POST['password'])){
             $customer = ModelCustomer::login($_POST['login'], $_POST['password']);
-
             if($customer){
                 $_SESSION['idClient'] = $customer->getIdClient();
                 $_SESSION['login'] = $customer->getLogin();

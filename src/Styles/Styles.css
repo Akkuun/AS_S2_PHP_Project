@@ -1,20 +1,20 @@
 #LoginScreen {
-    background-color: #4158D0;
-    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    background-color: black;
 }
 
 #CenterSquare {
-    margin-top: 11%;
-    margin-left: 30%;
-    width: 45%;
-    height: 65%;
+
+    margin-top: 3%;
+    margin-left: 22%;
+    width: 60%;
+    height:auto;
     display: flex;
     flex-direction: row;
     align-self: center;
     align-items: center;
     align-content: center;
     text-align: center;
-    background-color: white;
+    background-color:  #ffd700;
     border-radius: 10px;
 
 }
@@ -26,29 +26,30 @@
 }
 
 #RightPart {
-    width: auto;
-    height: auto;
+    height: 30%;
+    width: 63%;
+    padding-top: 10%;
     align-self: center;
     align-items: center;
     align-content: center;
     display: flex;
-    flex-direction: column;
-    border: 3px;
-    border: black;
+    flex-direction: row;
+
 }
 
 .Information {
     background-color: grey;
     border-radius: 10px;
-    margin-top: 10%;
+
 }
 
 #buttonLogin {
-    background-color: mediumseagreen;
+    background-color: black;
     border-radius: 10px;
-    margin-top: 15%;
-    width: 80%;
-    height: 80%;
+width: 30%;
+    height: 10%;
+color:  #ffd700;
+    align-self: center;
     padding-top: 4%;
     padding-bottom: 4%;
 
@@ -57,12 +58,13 @@
 
 #Title {
     font-weight: bold;
+    font-size: large;
 }
 
 #background_login {
     width: 80%;
     height: 20%;
-    padding-right: 50%;
+
 }
 
 ::placeholder {
@@ -77,20 +79,28 @@
 #createAccount {
     margin-top: 10%;
 }
-#icon_login{
-  position: absolute;
-    top: 38%;
-    left: 44%;
 
-    height: 3%;
-    width: 2%;
+#icon_login {
+    display: flex;
+    width: 10%;
+    height: 10%;
 }
-#icon_password{
-    position: absolute;
-    top: 44%;
-    left: 44%;
-    height: 3%;
-    width: 2%;
+
+#icon_password {
+    display: flex;
+    width: 10%;
+    height: 10%;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.verticlal {
+    display: flex;
+    flex-direction: column;
 }
 
 
