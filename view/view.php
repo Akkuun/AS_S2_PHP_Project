@@ -1,4 +1,5 @@
 <?php
+    require_once File::build_path(['model', 'ModelCategory.php']);
 ?>
 <html>
 <head>
@@ -59,6 +60,14 @@
         <ul>
             <li><a href="?action=readAll">Products</a></li>
             <li><a href="?action=read&controller=cart">Cart</a></li>
+            <li><a href="?action=filterByCategory">Category</a></li>
+            <?php
+                $categories = ModelCategory::getAllCategories();
+                foreach ($categories as $key => $category){
+                    echo "<li><a href='?action=filterByCategory&category=".htmlspecialchars($category->getId())."'>".htmlspecialchars($category->getName())."</a></li>";
+                }
+            ?>
+
             <?php if (isset($_SESSION['idClient'])){
                 echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
             }
