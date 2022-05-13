@@ -129,4 +129,25 @@ class ModelProduct{
 
         return $products;
     }
+
+    public function update($idOrigin, $idCategory){
+        $query = Model::getPDO()->prepare('UPDATE products
+                SET name = ?,
+                    description = ?,
+                    price = ?,
+                    image = ?,
+                    idOrigin = ?,
+                    idCategory = ?,
+                    quantity = ?
+                WHERE id = ?');
+
+        $query->execute([$this->getName(),
+                $this->getDescription(),
+                $this->getPrice(),
+                $this->getImage(),
+                $idOrigin,
+                $idCategory,
+                $this->getQuantity(),
+                $this->getId()]);
+    }
 }

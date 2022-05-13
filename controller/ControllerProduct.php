@@ -77,4 +77,37 @@ class ControllerProduct{
 
         require_once File::build_path(['view', 'view.php']);
     }
+
+    public static function update(){
+        if ($_SESSION['type'] == 'admin'){
+            $name = $_GET['name'];
+            $product = ModelProduct::getProductByName($name);
+
+            $view = 'update';
+            $pageTitle = "Edit $name";
+
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
+    }
+
+    public static function updated(){
+        if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description'])
+            && isset($_POST['price']) && isset($_POST['quantity']) && isset($_POST['image'])
+            && isset($_POST['origin']) && isset($_POST['category'])) {
+
+            $updatedProduct = new ModelProduct(['id' => $_POST['id'],
+                'name' => $_POST['name'],
+                'description' => $_POST['description'],
+                'price' => $_POST['price'],
+                'image' => $_POST['image'],
+                'quantity' => $_POST['quantity']
+            ]);
+
+            $updatedProduct->update($_POST['origin'], $_POST['category']);
+            self::readAll();
+        }
+    }
 }
