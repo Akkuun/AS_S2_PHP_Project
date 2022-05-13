@@ -11,9 +11,11 @@ class ControllerCustomer{
                 $_SESSION['idClient'] = $customer->getIdClient();
                 $_SESSION['login'] = $customer->getLogin();
                 $_SESSION['email'] = $customer->getEmail();
+                $_SESSION['type'] = $customer->getType();
                 $_SESSION['address'] = $customer->getAddress();
                 $_SESSION['phone'] = $customer->getPhone();
                 $_SESSION['profileImage'] = $customer->getProfileImage();
+                $_SESSION['cart'] = $customer->getCart();
             } else {
                 $_SESSION['error'] = "Identifiant ou mot de passe incorrect";
             }
@@ -66,14 +68,31 @@ class ControllerCustomer{
             if (isset($_SESSION['errorRegistering'])){
                 self::signUp();
             } else {
-                $query = Model::getPDO()->prepare('INSERT INTO clients (login, password, email, address, phone)
-                VALUES (?, ?, ?, ?, ?)');
+                $customer = new ModelCustomer([
+                    'login' => $_POST['login'],
+                    'type' => 'user',
+                    'email' => $_POST['email'],
+                    'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                    'address' => $_POST['address'],
+                    'phone' => $_POST['phone']
+                ]);
 
-                $query->execute([$_POST['login'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['email'],
-                    $_POST['address'], $_POST['phone']]);
+                $customer->save();
 
                 self::logIn();
             }
+        }
+    }
+
+    public static function read(){
+        if (isset($_SESSION['idClient'])){
+            $view = 'profile';
+            $pageTitle = $_SESSION['login'];
+
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct']);
+            ControllerProduct::readAll();
         }
     }
 }

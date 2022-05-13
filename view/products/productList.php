@@ -8,6 +8,7 @@ if (isset($products)){
         echo "<ul>
             <li><a href='?action=read&name=".rawurlencode($product->getName())."'>".htmlspecialchars($product->getName())."</a></li>
             <li>".htmlspecialchars($product->getPrice())."</li>
+            <li><a href='?action=addProduct&controller=cart&idProduct=".$product->getId()."'>+</a></li>
         </ul>";
         echo "</div>";
     }

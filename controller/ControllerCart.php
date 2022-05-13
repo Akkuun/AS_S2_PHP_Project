@@ -8,17 +8,47 @@ class ControllerCart {
     }
 
     public static function read() {
-        $idClient = $_SESSION["id"];
-        $cart = ModelCart::getCartByClientId($idClient);
         $view='productList';
-        $pagetitle="Your shopping cart";
+        $pageTitle="Your shopping cart";
         require self::getPathToView();
     }
 
     public static function error() {
         $view='error';
-        $pagetitle='Error';
+        $pageTitle='Error';
         require self::getPathToView();
+    }
+
+    public static function addProduct(){
+        if (isset($_GET['idProduct'])){
+            $quantity = isset($_GET['q']) ? $_GET['q'] : 1;
+            ModelCart::addProduct($_GET['idProduct'], $quantity);
+        }
+
+        $from = isset($_GET['from']) ? $_GET['from'] : 'productList';
+
+        if ($from == 'cart'){
+            self::read();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
+    }
+
+    public static function removeProduct(){
+        if (isset($_GET['idProduct'])){
+            $quantity = isset($_GET['q']) ? $_GET['q'] : 1;
+            ModelCart::removeProduct($_GET['idProduct'], $quantity);
+        }
+
+        $from = isset($_GET['from']) ? $_GET['from'] : 'productList';
+
+        if ($from == 'cart'){
+            self::read();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 }
 ?>

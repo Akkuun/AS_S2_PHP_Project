@@ -5,6 +5,7 @@ class ModelCustomer{
     private $idClient;
     private $login;
     private $email;
+    private $type;
     private $password;
     private $address;
     private $phone;
@@ -13,12 +14,15 @@ class ModelCustomer{
 
     public function __construct($datas = NULL){
         if (!is_null($datas)){
-            $this->idClient = $datas['idClient'];
+            if(isset($datas['idClient'])){
+                $this->idClient = $datas['idClient'];
+            }
             $this->login = $datas['login'];
+            $this->type = $datas['type'];
+            $this->email = $datas['email'];
             $this->password = $datas['password'];
             $this->address = $datas['address'];
             $this->phone = $datas['phone'];
-            $this->profileImage = $datas['profileImage'];
         }
     }
 
@@ -30,6 +34,11 @@ class ModelCustomer{
     public function getLogin()
     {
         return $this->login;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function getEmail()
@@ -58,7 +67,9 @@ class ModelCustomer{
     }
 
     public function getCart(){
-
+        require_once File::build_path(['model', 'ModelCart.php']);
+        $this->cart = ModelCart::getCartByClientId($this->idClient);
+        return $this->cart;
     }
 
     public static function login($login, $password){
@@ -74,6 +85,34 @@ class ModelCustomer{
         }
 
         return $customer[0];
+    }
+
+    public function save(){
+        $query = Model::getPDO()->prepare("INSERT INTO clients
+            (login, type, email, password, address, phone, profileImage)
+            VALUES(?, ?, ?, ?, ?, ?, ?); ");
+
+        $query->execute([$this->login, $this->type, $this->email,$this->password,
+            $this->address, $this->phone, $this->profileImage]);
+
+        $query = Model::getPDO()->prepare("CALL setCartOnSignUp(?)");
+        $query->execute([$this->login]);
+    }
+
+    public static function getClientById($id){
+        $query = Model::getPDO()->prepare("SELECT * FROM  clients
+            WHERE idClient = ?"
+            );
+        $query->execute([$id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelCustomer');
+
+        $customers = $query->fetchAll();
+
+        if (count($customers) == 0){
+            $customers[0] = false;
+        }
+        var_dump($customers[0]);
+        return $customers[0];
     }
 
 

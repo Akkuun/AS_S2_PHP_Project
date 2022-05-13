@@ -12,53 +12,65 @@ class ModelCart {
     public function getProductList() {
         return $this->productList;
     }
+   
+    public static function addProduct($idProduct, $quantity) {
+        $query = null;
+        if (isset($_SESSION['cart'][$idProduct])){
+            $_SESSION['cart'][$idProduct] += $quantity;
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL addQuantityCartRow(?, ? ,?)");
+            }
+        } else {
+            $_SESSION['cart'][$idProduct] = $quantity;
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL insertCartRow(?, ?, ?)");
+            }
+        }
 
-    public function addRowToProductList($row) {
-        $this->productList[$row->idProduct] = $row->quantity;
-    }
-   
-    public function addProduct($idProduct, $quantity) {
-        $values = array(
-            "q" => $quantity,
-            "cart" => $this->idCart,
-            "product" => $idProduct
-        );
-        if (isset($productList[$idProduct])) {
-            $productList[$idProduct] += $quantity;
-            $sql = "UPDATE cartRow SET quantity=quantity+:q WHERE idCart=:cart AND idProduct=:product";
-            try {
-                $req_prep = Model::getPDO()->prepare($sql);
-                $req_prep->execute($values);
-            }
-            catch(PDOException $e) {
-                return false;
-            }
-            return true;
+        if (!is_null($query)){
+            $query->execute([
+                $_SESSION['idClient'],
+                $idProduct,
+                $quantity
+            ]);
         }
-        else {
-            $productList[$idProduct] = $quantity;
-            $sql = "INSERT INTO cartRow VALUES(:cart,:product,:q);";
-            try {
-                $req_prep = Model::getPDO()->prepare($sql);
-                $req_prep->execute($values);
+    }
+
+    public static function removeProduct($idProduct, $quantity){
+        $query = null;
+        if (isset($_SESSION['cart'][$idProduct])){
+            $_SESSION['cart'][$idProduct] -= $quantity;
+
+            if ($_SESSION['cart'][$idProduct] <= 0){
+                unset($_SESSION['cart'][$idProduct]);
             }
-            catch(PDOException $e) {
-                return false;
+
+            if (isset($_SESSION['idClient'])){
+                $query = Model::getPDO()->prepare("CALL removeProduct(?, ? ,?)");
             }
-            return true;
+        }
+
+        if (!is_null($query)){
+            $query->execute([
+                $_SESSION['idClient'],
+                $idProduct,
+                $quantity
+            ]);
         }
     }
    
-    public function __construct($data = array()) {
-        foreach ($data as $attribut => $valeur) {
-            if (property_exists($this, $attribut))
-                $this->$attribut = $valeur;
+    public function __construct($data = NULL) {
+        if (!is_null($data)) {
+            foreach ($data as $attribut => $valeur) {
+                if (property_exists($this, $attribut))
+                    $this->$attribut = $valeur;
+            }
         }
     }
 
     public static function getCartByClientId($idClient) {
         $sql = "SELECT * from carts WHERE idClient=?";
-        $sql2 = "SELECT * from cartRows WHERE idCart=?";
+        $sql2 = "SELECT * from cartRow WHERE idCart=?";
         
         try {
             $req_prep = Model::getPDO()->prepare($sql);	 
@@ -72,8 +84,9 @@ class ModelCart {
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $cartRowsTab = $req_prep->fetchAll();
             foreach($cartRowsTab as $row) {
-                $cart->addRowToProductList($row);
+                $finalCart[$row->idProduct] = $row->quantity;
             }
+            return $finalCart;
         }
         catch(PDOException $e) {
             if (Conf::getDebug()) {
@@ -84,7 +97,6 @@ class ModelCart {
             }
             die();
         }
-        return $cart;
     }
 }
 ?>

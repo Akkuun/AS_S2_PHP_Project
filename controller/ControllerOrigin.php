@@ -5,10 +5,15 @@ class ControllerOrigin{
     static $controller = 'origins';
 
     public static function create(){
-        $view = 'create';
-        $pageTitle = 'Create new origin';
+        if ($_SESSION['type'] == 'admin'){
+            $view = 'create';
+            $pageTitle = 'Create new origin';
 
-        require_once File::build_path(['view', 'origins', 'create.php']);
+            require_once File::build_path(['view', 'origins', 'create.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 
     public static function created(){
