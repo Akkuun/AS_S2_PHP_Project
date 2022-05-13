@@ -26,6 +26,7 @@ if (empty($_SESSION['cart'])) {
             </tr>";
     }
     echo "</tbody></table>";
+    echo "<p><a href='?action=convertToOrder&controller=cart'>Buy</a></p>";
     echo "<p><a href='?action=readAll'>Go to shopping</a></p>";
 }
 ?>

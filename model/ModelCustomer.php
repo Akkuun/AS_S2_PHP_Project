@@ -68,7 +68,7 @@ class ModelCustomer{
 
     public function getCart(){
         require_once File::build_path(['model', 'ModelCart.php']);
-        $this->cart = ModelCart::getCartByClientId($this->idClient);
+        $this->cart = ModelCart::getCartByClientId($this->idClient)->getProductList();
         return $this->cart;
     }
 
