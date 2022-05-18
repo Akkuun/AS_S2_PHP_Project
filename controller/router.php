@@ -4,6 +4,7 @@ require_once File::build_path(['controller', 'ControllerProduct.php']);
 require_once File::build_path(['controller', 'ControllerCategory.php']);
 require_once File::build_path(['controller', 'ControllerOrigin.php']);
 require_once File::build_path(['controller', 'ControllerCustomer.php']);
+require_once File::build_path(['controller', 'ControllerTag.php']);
 
 $controller = isset($_GET['controller']) ? $_GET['controller'] : "products";
 
@@ -22,6 +23,10 @@ switch ($controller) {
         break;
     case "customers" :
         $controller_class = "ControllerCustomer";
+        break;
+    case "tags" :
+        $controller_class = "ControllerTag";
+        break;
 }
 
 $action =  isset($_GET['action']) ? $_GET['action'] : "readAll";

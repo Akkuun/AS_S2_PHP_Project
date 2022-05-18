@@ -150,4 +150,28 @@ class ModelProduct{
                 $this->getQuantity(),
                 $this->getId()]);
     }
+
+    public static function getAllProductByTag($idTag){
+        $query = Model::getPDO()->prepare('SELECT * FROM products p
+            WHERE EXISTS (
+                SELECT * FROM owns o
+                WHERE idTag = ?
+                AND o.idProducts = p.id
+            )');
+        $query->execute([$idTag]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
+
+        $products = $query->fetchAll();
+
+        if (empty($products)){
+            $products = false;
+        }
+
+        return $products;
+    }
+
+    public function delete(){
+        $query = Model::getPDO()->prepare('DELETE FROM products WHERE id = ?');
+        $query->execute([$this->id]);
+    }
 }
