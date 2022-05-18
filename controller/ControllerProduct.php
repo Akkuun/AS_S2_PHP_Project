@@ -87,12 +87,11 @@ class ControllerProduct{
     public static function filterByCategory(){
         $category = $_GET['category'];
         $products = ModelProduct::getAllProductByCategory($category);
-        foreach ($products as $index => $value) {
-            echo
-                "<p>" . "<li>" . $value->getName() . "</li><li>" .
-                $value->getDescription() . "</li><li>" .
-                $value->getPrice() . "</li></p>";
-        }
+
+        $view = 'productList';
+        $pageTitle = 'All products';
+
+        require_once File::build_path(['view', 'view.php']);
     }
 
 
