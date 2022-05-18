@@ -38,9 +38,11 @@ class ControllerCategory{
         if (isset($_GET['idCtg']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
             $category = ModelCategory::getCategoryById($_GET['idCtg']);
             $category->delete();
-        }
 
-        require_once File::build_path(['controller', 'ControllerProduct.php']);
-        ControllerProduct::readAll();
+            self::readAll();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 }

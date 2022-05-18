@@ -41,9 +41,11 @@
             if (isset($_GET['idTag']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
                 $tag = ModelTag::getTagById($_GET['idTag']);
                 $tag->delete();
-            }
 
-            require_once File::build_path(['controller', 'ControllerProduct.php']);
-            ControllerProduct::readAll();
+                self::readAll();
+            } else {
+                require_once File::build_path(['controller', 'ControllerProduct.php']);
+                ControllerProduct::readAll();
+            }
         }
     }

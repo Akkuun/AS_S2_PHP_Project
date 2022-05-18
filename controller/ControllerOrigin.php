@@ -41,9 +41,13 @@ class ControllerOrigin{
         if (isset($_GET['idOgn']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
             $origin = ModelOrigin::getOriginById($_GET['idOgn']);
             $origin->delete();
+
+            self::readAll();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
         }
 
-        require_once File::build_path(['controller', 'ControllerProduct.php']);
-        ControllerProduct::readAll();
+
     }
 }
