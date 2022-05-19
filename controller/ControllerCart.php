@@ -8,9 +8,15 @@ class ControllerCart {
     }
 
     public static function read() {
-        $view='productList';
-        $pageTitle="Your shopping cart";
-        require self::getPathToView();
+        if (!isset($_SESSION['idClient'])){
+            $_SESSION['error'] = "Please, log in to access this page.";
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        } else {
+            $view='productList';
+            $pageTitle="Your shopping cart";
+            require self::getPathToView();
+        }
     }
 
     public static function error() {

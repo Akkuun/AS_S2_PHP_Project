@@ -29,8 +29,26 @@ class ModelCategory{
         return $categories;
     }
 
+    public static function getCategoryById($id){
+        $query = Model::getPDO()->prepare('SELECT * FROM categories WHERE id = ?');
+        $query->execute([$id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelCategory');
+        $category=$query->fetchAll();
+
+        if (empty($category)){
+            $category[0] = false;
+        }
+
+        return $category[0];
+    }
+
     public function save(){
         $query = Model::getPDO()->prepare('INSERT INTO categories (name) VALUES (?)');
         $query->execute([$this->name]);
+    }
+
+    public function delete(){
+        $query = Model::getPDO()->prepare('DELETE FROM categories WHERE id = ?');
+        $query->execute([$this->id]);
     }
 }

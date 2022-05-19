@@ -1,5 +1,6 @@
 <?php
     require_once File::build_path(['model', 'ModelCategory.php']);
+    require_once File::build_path(['model', 'ModelTag.php']);
 ?>
 <html>
 <head>
@@ -60,24 +61,32 @@
         <ul>
             <li><a href="?action=readAll">Products</a></li>
             <li><a href="?action=read&controller=cart">Cart</a></li>
-            <li><a href="?action=filterByCategory">Category</a></li>
+            <li>Category</li>
             <?php
                 $categories = ModelCategory::getAllCategories();
                 foreach ($categories as $key => $category){
                     echo "<li><a href='?action=filterByCategory&category=".htmlspecialchars($category->getId())."'>".htmlspecialchars($category->getName())."</a></li>";
                 }
             ?>
-
-            <?php if (isset($_SESSION['idClient'])){
-                echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
-            }
+            <li>Tags</li>
+            <?php
+                $tags = ModelTag::getAllTags();
+                foreach ($tags as $key => $tag){
+                    echo "<li><a href='?action=getAllProductByTag&tag=".htmlspecialchars($tag->getId())."'>".htmlspecialchars($tag->getNameTag())."</a></li>";
+                }
+                if (isset($_SESSION['idClient'])){
+                    echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
+                    if ($_SESSION['type'] == 'admin'){
+                        echo "<li><a href='?action=admin&controller=customers'>Admin</a></li>";
+                    }
+                }
             ?>
         </ul>
     </nav>
 </header>
 <body>
 <?php
-require File::build_path(["view", self::$controller, "$view.php"]);
+    require File::build_path(["view", self::$controller, "$view.php"]);
 ?>
 </body>
 <footer>

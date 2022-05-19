@@ -1,4 +1,4 @@
-<form method="post" action="?action=created">
+<form method="post" action="?action=created" enctype="multipart/form-data">
     <fieldset>
         <legend>New products :</legend>
         <p>
@@ -24,7 +24,7 @@
         </p>
         <p>
             <label for="image">Image</label> :
-            <input type="text" placeholder="name.format" name="image" id="image" required>
+            <input type="file" name="image" id="image" required>
         </p>
         <p>
             <label>Select the origin : </label>

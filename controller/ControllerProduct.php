@@ -1,8 +1,7 @@
 <?php
 require_once FIle::build_path(['model', 'ModelProduct.php']);
 
-class ControllerProduct
-{
+class ControllerProduct{
     static $controller = 'products';
 
     public static function readAll()
@@ -17,7 +16,7 @@ class ControllerProduct
 
     public static function create()
     {
-        if ($_SESSION['type'] == 'admin') {
+        if (isset($_SESSION['type']) && $_SESSION['type'] == 'admin') {
             $view = 'create';
             $pageTitle = 'Create a new Product';
 
@@ -30,7 +29,6 @@ class ControllerProduct
 
     public static function created()
     {
-        /*
         if (isset($_FILES['image'])){
             $formatsAllowed = ['png', 'jpg', 'jpeg', 'gif'];
 
@@ -40,11 +38,11 @@ class ControllerProduct
             if (in_array($imageFormat, $formatsAllowed)){
                 $_POST['image'] = $_FILES['image']['name'];
             }
-        }*/
+        }
 
         if (isset($_POST['name']) && isset($_POST['price'])
             && isset($_POST['image']) && isset($_POST['category'])) {
-            //move_uploaded_file($_FILES['image']['tmp_name'], File::build_path(['src', 'images', 'productsPictures', $_FILES['image']['name']]));
+            move_uploaded_file($_FILES['image']['tmp_name'], File::build_path(['src', 'images', 'productsPictures', $_FILES['image']['name']]));
 
             $valuesToBind = [];
 
@@ -86,54 +84,59 @@ class ControllerProduct
     }
 
 
-    public static function filterByCategory()
-    {
+    public static function filterByCategory(){
         $category = $_GET['category'];
         $products = ModelProduct::getAllProductByCategory($category);
-        foreach ($products as $index => $value) {
-            echo
-                "<p>" . "<li>" . $value->getName() . "</li><li>" .
-                $value->getDescription() . "</li><li>" .
-                $value->getPrice() . "</li></p>";
-        }
+
+        $view = 'productList';
+        $pageTitle = 'All products';
+
+        require_once File::build_path(['view', 'view.php']);
     }
 
 
-        public
-        static function updated()
-        {
-            if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description'])
-                && isset($_POST['price']) && isset($_POST['quantity']) && isset($_POST['image'])
-                && isset($_POST['origin']) && isset($_POST['category'])) {
+    public static function updated(){
+        if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description'])
+            && isset($_POST['price']) && isset($_POST['quantity']) && isset($_POST['image'])
+            && isset($_POST['origin']) && isset($_POST['category'])) {
 
-                $updatedProduct = new ModelProduct(['id' => $_POST['id'],
-                    'name' => $_POST['name'],
-                    'description' => $_POST['description'],
-                    'price' => $_POST['price'],
-                    'image' => $_POST['image'],
-                    'quantity' => $_POST['quantity']
-                ]);
+            $updatedProduct = new ModelProduct(['id' => $_POST['id'],
+                'name' => $_POST['name'],
+                'description' => $_POST['description'],
+                'price' => $_POST['price'],
+                'image' => $_POST['image'],
+                'quantity' => $_POST['quantity']
+            ]);
 
-                $updatedProduct->update($_POST['origin'], $_POST['category']);
-                self::readAll();
+            $updatedProduct->update($_POST['origin'], $_POST['category']);
+            self::readAll();
 
-            }
-        }
-
-        public
-        static function update()
-        {
-            if ($_SESSION['type'] == 'admin') {
-                $name = $_GET['name'];
-                $product = ModelProduct::getProductByName($name);
-
-                $view = 'update';
-                $pageTitle = "Edit $name";
-
-                require_once File::build_path(['view', 'view.php']);
-            } else {
-                require_once File::build_path(['controller', 'ControllerProduct.php']);
-                ControllerProduct::readAll();
-            }
         }
     }
+
+    public static function update(){
+        if ($_SESSION['type'] == 'admin') {
+            $name = $_GET['name'];
+            $product = ModelProduct::getProductByName($name);
+
+            $view = 'update';
+            $pageTitle = "Edit $name";
+
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
+    }
+
+    public static function delete(){
+        if (isset($_GET['idPct']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+            $product = ModelProduct::getProductById($_GET['idPct']);
+            $product->delete();
+        }
+
+        self::readAll();
+    }
+
+
+}

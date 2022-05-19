@@ -5,7 +5,7 @@ class ControllerCategory{
     static $controller = "categories";
 
     public static function create(){
-        if ($_SESSION['type'] == 'admin'){
+        if (isset($_SESSION['type']) && $_SESSION['type'] == 'admin') {
             $view = 'create';
             $pageTitle = 'Create a new Category';
 
@@ -32,5 +32,17 @@ class ControllerCategory{
         $pageTitle = 'All categories';
 
         require_once File::build_path(['view', 'view.php']);
+    }
+
+    public static function delete(){
+        if (isset($_GET['idCtg']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+            $category = ModelCategory::getCategoryById($_GET['idCtg']);
+            $category->delete();
+
+            self::readAll();
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct.php']);
+            ControllerProduct::readAll();
+        }
     }
 }
