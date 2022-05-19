@@ -50,11 +50,27 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Times','',14);
-for($i = 1; $i <= 30; $i++) {
+$pdf->Cell(20);
+$pdf->Cell(45, 10, 'Order id:', 0, 0);
+$pdf->Cell(45, 10, $order->getId(), 0, 1);
+$pdf->Ln(10);
+$pdf->Cell(20);
+$pdf->Cell(45, 10, 'Product id', 0, 0);
+$pdf->Cell(45, 10, 'Name', 0, 0);
+$pdf->Cell(45, 10, 'Quantity', 0, 0);
+$pdf->Cell(45, 10, 'Price', 0, 1);
+foreach ($order->getOrderRows() as $id => $quantity) {
+	$product = ModelProduct::getProductById($id);
 	$pdf->Cell(20);
-	$pdf->Cell(0, 10, 'Product number '
-			. $i, 0, 1);
+	$pdf->Cell(45, 10, ''.$id, 0, 0);
+	$pdf->Cell(45, 10, ''.$product->getName(), 0, 0);
+	$pdf->Cell(45, 10, ''.$quantity, 0, 0);
+	$pdf->Cell(45, 10, ''.($product->getPrice() * $quantity), 0, 1);
 }
+$pdf->Ln(10);
+$pdf->Cell(20);
+$pdf->Cell(135, 10, 'Total', 0, 0);
+$pdf->Cell(45, 10, ''.$order->countTotal(), 0, 1);
 $pdf->Output();
 
 ?>

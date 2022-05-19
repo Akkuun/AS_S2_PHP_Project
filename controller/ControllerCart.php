@@ -59,8 +59,8 @@ class ControllerCart {
 
     public static function convertToOrder() {
         $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
-        print_r($cart);
-        if ($cart->convertToOrder()) {
+        $order = $cart->convertToOrder();
+        if ($order) {
             $view='orderConfirmed';
             $pageTitle="Order Confirmation";
             require self::getPathToView();

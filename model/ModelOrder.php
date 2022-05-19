@@ -4,12 +4,17 @@ require_once File::build_path(array("model", "Model.php"));
    
 class ModelOrder {
    
+    private $idOrder;
     private $idClient;
     private $orderRows;
     private $total;
        
-    public function getProductList() {
-        return $this->productList;
+    public function getOrderRows() {
+        return $this->orderRows;
+    }
+
+    public function getId() {
+        return $this->idOrder;
     }
    
     public function payOrder() {
@@ -28,6 +33,7 @@ class ModelOrder {
                 $req_prep = Model::getPDO()->prepare($sql2);
                 $lastOrder = self::findLastOrderId();
                 $tabOrder = [$lastOrder, $product, $quantity];
+                $this->idOrder = $lastOrder;
                 $req_prep->execute($tabOrder);
             }
             return true;
@@ -89,6 +95,14 @@ class ModelOrder {
             }
             die();
         }
+    }
+
+    public function countTotal() {
+        $sum = 0;
+        foreach ($this->orderRows as $id => $quantity) {
+            $sum += ModelProduct::getProductById($id)->getPrice() * $quantity;
+        }
+        return $sum;
     }
 }
 ?>
