@@ -4,17 +4,26 @@ require_once File::build_path(array("model", "Model.php"));
    
 class ModelOrder {
    
-    private $idOrder;
+    private $id;
     private $idClient;
     private $orderRows;
+    private $date;
     private $total;
        
     public function getOrderRows() {
         return $this->orderRows;
     }
 
+    public function getDate() {
+        return $this->date;
+    }
+
     public function getId() {
-        return $this->idOrder;
+        return $this->id;
+    }
+
+    public function getTotal() {
+        return $this->total;
     }
    
     public function payOrder() {
@@ -29,11 +38,11 @@ class ModelOrder {
             $tabOrder = [$this->idClient, $this->total];
             $req_prep->execute($tabOrder);
 
+            $lastOrder = self::findLastOrderId();
+            $this->id = $lastOrder;
             foreach($this->orderRows as $product => $quantity) {
                 $req_prep = Model::getPDO()->prepare($sql2);
-                $lastOrder = self::findLastOrderId();
                 $tabOrder = [$lastOrder, $product, $quantity];
-                $this->idOrder = $lastOrder;
                 $req_prep->execute($tabOrder);
             }
             return true;
@@ -78,13 +87,15 @@ class ModelOrder {
             if (empty($order))
                 return false;
             $req_prep = Model::getPDO()->prepare($sql2);
-            $req_prep->execute([$order->idCart,]);
+            $req_prep->execute([$idOrder,]);
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $orderRowsTab = $req_prep->fetchAll();
+            $finalOrder = Array();
             foreach($orderRowsTab as $row) {
                 $finalOrder[$row->idProduct] = $row->quantity;
             }
-            return $finalOrder;
+            $order->orderRows = $finalOrder;
+            return $order;
         }
         catch(PDOException $e) {
             if (Conf::getDebug()) {

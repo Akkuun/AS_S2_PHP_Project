@@ -59,9 +59,25 @@ class ControllerCart {
 
     public static function convertToOrder() {
         $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
-        $order = $cart->convertToOrder();
-        if ($order) {
-            $view='orderConfirmed';
+        if (!empty($cart->getProductList())) {
+            $order = $cart->convertToOrder();
+            if ($order) {
+                $view='orderConfirmed';
+                $pageTitle="Order Confirmation";
+                require self::getPathToView();
+            }
+        }
+    }
+
+    public static function generatePDF() {
+        if(!isset($_POST['order'])) {
+            $view = 'error';
+            $pageTitle='Error';
+            require self::getPathToView();
+        }
+        else {
+            $order = ModelOrder::getOrderById($_POST['order']);
+            $view='pdfReceipt';
             $pageTitle="Order Confirmation";
             require self::getPathToView();
         }
