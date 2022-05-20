@@ -14,6 +14,7 @@ if (empty($_SESSION['cart'])) {
 } else {
     echo "<tbody>";
     require_once File::build_path(['model', 'ModelProduct.php']);
+    $total = 0;
     foreach ($_SESSION['cart'] as $key => $quantity) {
         $product = ModelProduct::getProductById($key);
         echo "<tr>
@@ -24,8 +25,15 @@ if (empty($_SESSION['cart'])) {
             <td><a href='?action=addProduct&from=cart&controller=cart&idProduct=".$product->getId()."'>+</a></td>
             <td><a href='?action=removeProduct&from=cart&controller=cart&idProduct=".$product->getId()."'>-</a></td>
             </tr>";
+        $total += $quantity*$product->getPrice();
     }
+    echo "<tr>
+            <td></td>
+            <td></td>
+            <th>Total : </th>
+            <td>$total</td>";
     echo "</tbody></table>";
+    echo "<p><a href='?action=convertToOrder&controller=cart'>Buy</a></p>";
     echo "<p><a href='?action=readAll'>Go to shopping</a></p>";
 }
 ?>

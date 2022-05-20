@@ -44,10 +44,27 @@ class ModelOrigin{
         return $origins;
     }
 
+    public static function getOriginById($id){
+        $query = Model::getPDO()->prepare('SELECT * FROM origins WHERE id = ?');
+        $query->execute([$id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelOrigin');
+        $origin = $query->fetchAll();
+
+        if (empty($origin)){
+            $origin[0] = false;
+        }
+
+        return $origin[0];
+    }
+
     public function save(){
         $query = Model::getPDO()->prepare('INSERT INTO origins (name, creator, releaseDate) VALUES (?, ?, ?)');
         $query->execute([$this->name, $this->creator, $this->releaseDate]);
     }
 
+    public function delete(){
+        $query = Model::getPDO()->prepare('DELETE FROM origins WHERE id = ?');
+        $query->execute([$this->id]);
+    }
 
 }

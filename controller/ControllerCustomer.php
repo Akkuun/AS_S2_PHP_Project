@@ -95,4 +95,16 @@ class ControllerCustomer{
             ControllerProduct::readAll();
         }
     }
+
+    public static function admin(){
+        if (isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+            $view = 'admin';
+            $pageTitle = 'Admin page';
+
+            require_once File::build_path(['view', 'view.php']);
+        } else {
+            require_once File::build_path(['controller', 'ControllerProduct']);
+            ControllerProduct::readAll();
+        }
+    }
 }

@@ -4,6 +4,7 @@ require_once File::build_path(['model', 'ModelProduct.php']);
 
 if (isset($products)) {
     foreach ($products as $key => $product) {
+
         $img=$product->getImage();
         echo "<div class='flex-item'>";
         echo "<div class='carre'>";

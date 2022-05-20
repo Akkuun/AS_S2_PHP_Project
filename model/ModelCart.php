@@ -1,5 +1,6 @@
 <?php
-
+require_once File::build_path(array("model", "ModelOrder.php"));
+require_once File::build_path(array("model", "ModelProduct.php"));
 require_once File::build_path(array("model", "Model.php"));
    
 class ModelCart {
@@ -83,10 +84,12 @@ class ModelCart {
             $req_prep->execute([$cart->idCart,]);
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $cartRowsTab = $req_prep->fetchAll();
+            $finalCart = Array();
             foreach($cartRowsTab as $row) {
                 $finalCart[$row->idProduct] = $row->quantity;
             }
-            return $finalCart;
+            $cart->productList = $finalCart;
+            return $cart;
         }
         catch(PDOException $e) {
             if (Conf::getDebug()) {
@@ -97,6 +100,34 @@ class ModelCart {
             }
             die();
         }
+    }
+
+    private function countCartTotal() {
+        $total = 0;
+        foreach ($this->productList as $id => $quantity) {
+            $product = ModelProduct::getProductById($id);
+            $total += $product->getPrice() * $quantity;
+        }
+        return $total;
+    }
+
+    private function emptyCart() {
+        foreach($this->productList as $p => $q) {
+            $this->removeProduct($p, $q);
+        }
+    }
+
+    public function convertToOrder() {
+        $order = new ModelOrder(Array(
+            'idClient' => $this->idClient,
+            'total' => $this->countCartTotal(),
+            'orderRows' => $this->productList
+        ));
+        if ($order->payOrder() && $order->confirmOrder()) {
+            $this->emptyCart();
+            return $order;
+        }
+        return false;
     }
 }
 ?>
