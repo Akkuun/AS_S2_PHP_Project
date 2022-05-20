@@ -1,14 +1,17 @@
 <?php
     require_once File::build_path(['model', 'ModelCategory.php']);
-?>
-<html>
+    $pathCss =  File::build_path(['src', 'styles','styles.css']);
+
+
+echo "<html>
 <head>
-    <meta charset="UTF-8">
-    <title><?php echo $pageTitle?></title>
+    <meta charset='UTF-8'>
+    <title> $pageTitle </title>
+    <link rel='stylesheet' href='./src/styles/styles.css'>
 </head>
-</html>
-<header>
-    <?php
+
+<header>";
+
     if (!isset($_SESSION['login'])){
         echo "<form method='post' action='?action=logIn&controller=customers'>
                 <table>
@@ -76,10 +79,18 @@
     </nav>
 </header>
 <body>
+
+<div class="flex-container">
+
+
+
 <?php
 require File::build_path(["view", self::$controller, "$view.php"]);
 ?>
+
+</div>
 </body>
 <footer>
     <p>EREBOR STORE</p>
 </footer>
+</html>

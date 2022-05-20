@@ -94,7 +94,7 @@ class ControllerProduct
             echo
                 "<p>" . "<li>" . $value->getName() . "</li><li>" .
                 $value->getDescription() . "</li><li>" .
-                $value->getPrice() . "</li></p>";
+                $value->getPrice() . "</li><img alt='imageProduit' src='./src/images/productsPictures/".$value->getImage()."'></p>";
         }
     }
 
