@@ -26,9 +26,6 @@ class ControllerCart {
     }
 
     public static function addProduct(){
-        if (!isset($_POST['idClient'])){
-            $_SESSION['error'] = 'Please connect to add product to the cart.';
-        }
         if (isset($_GET['idProduct'])){
             $quantity = isset($_GET['q']) ? $_GET['q'] : 1;
             ModelCart::addProduct($_GET['idProduct'], $quantity);
@@ -93,7 +90,7 @@ class ControllerCart {
             $order = ModelOrder::getOrderById($_POST['order']);
             $view='pdfReceipt';
             $pageTitle="Order Confirmation";
-            require self::getPathToView();
+            require File::build_path(["view", "cart", "$view.php"]);
         }
     }
 }

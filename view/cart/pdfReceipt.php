@@ -1,6 +1,7 @@
 <?php
 
 require_once File::build_path(['lib', 'fpdf', 'fpdf.php']);
+// error_reporting(0);
 ob_end_clean();
 header("Content-Encoding: None", true);
 
@@ -44,6 +45,7 @@ class PDF extends FPDF {
 
 // Instantiation of FPDF class
 $pdf = new PDF();
+$pdf->SetTitle($pageTitle);
 
 // Define alias for number of pages
 $pdf->AliasNbPages();
