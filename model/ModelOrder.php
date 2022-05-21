@@ -60,10 +60,10 @@ class ModelOrder {
     }
 
     public function confirmOrder() {
-        $sql = "UPDATE clientOrder SET confirmed=?";
+        $sql = "UPDATE clientOrder SET confirmed=true WHERE id=?";
         try {
-            $req_prep = Model::getPDO()->prepare($sql);	 
-            $tabOrder = [true,];
+            $req_prep = Model::getPDO()->prepare($sql);
+            $tabOrder = [$this->id,];
             $req_prep->execute($tabOrder);
             return true;
         }
@@ -80,8 +80,9 @@ class ModelOrder {
     }
    
     private static function findLastOrderId() {
-        $sql = "SELECT MAX(id) AS id FROM clientOrder";
-        $req_prep = Model::getPDO()->query($sql);
+        $sql = "SELECT MAX(id) AS id FROM clientOrder WHERE idClient=?";
+        $req_prep = Model::getPDO()->prepare($sql);	 
+        $req_prep->execute([$_SESSION['idClient'],]);
         $lastOrder = $req_prep->fetch();
         return $lastOrder['id'];
     }
