@@ -30,7 +30,7 @@ class ModelOrder {
         return true;
     }
 
-    public function confirmOrder() {
+    public function createOrder() {
         $sql = "INSERT INTO clientOrder(idClient, total) VALUES(?, ?)";
         $sql2 = "INSERT INTO orderRow VALUES(?, ?, ?)";
         try {
@@ -45,6 +45,26 @@ class ModelOrder {
                 $tabOrder = [$lastOrder, $product, $quantity];
                 $req_prep->execute($tabOrder);
             }
+            return true;
+        }
+        catch(PDOException $e) {
+            if (Conf::getDebug()) {
+                echo $e->getMessage();
+            }
+            else {
+                echo 'Error creating order, please contact store administrators';
+            }
+            return false;
+            die();
+        }
+    }
+
+    public function confirmOrder() {
+        $sql = "UPDATE clientOrder SET confirmed=?";
+        try {
+            $req_prep = Model::getPDO()->prepare($sql);	 
+            $tabOrder = [true,];
+            $req_prep->execute($tabOrder);
             return true;
         }
         catch(PDOException $e) {
@@ -72,6 +92,39 @@ class ModelOrder {
                 if (property_exists($this, $attribut))
                     $this->$attribut = $valeur;
             }
+        }
+    }
+
+    public static function getLastOrderByClientId($idClient) {
+        $sql = "SELECT * FROM clientOrder WHERE idClient=:client AND date = (SELECT MAX(date) FROM clientOrder WHERE idClient=:client)";
+        $sql2 = "SELECT * FROM orderRow WHERE idOrder=?";
+        
+        try {
+            $req_prep = Model::getPDO()->prepare($sql);	 
+            $req_prep->execute(Array('client' => $idClient));
+            $req_prep->setFetchMode(PDO::FETCH_CLASS, 'ModelOrder');
+            $order = $req_prep->fetch();
+            if (empty($order))
+                return false;
+            $req_prep = Model::getPDO()->prepare($sql2);
+            $req_prep->execute([$order->id,]);
+            $req_prep->setFetchMode(PDO::FETCH_OBJ);
+            $orderRowsTab = $req_prep->fetchAll();
+            $finalOrder = Array();
+            foreach($orderRowsTab as $row) {
+                $finalOrder[$row->idProduct] = $row->quantity;
+            }
+            $order->orderRows = $finalOrder;
+            return $order;
+        }
+        catch(PDOException $e) {
+            if (Conf::getDebug()) {
+                echo $e->getMessage();
+            }
+            else {
+                echo 'Error finding order';
+            }
+            die();
         }
     }
 

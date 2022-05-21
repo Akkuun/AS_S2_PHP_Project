@@ -111,23 +111,18 @@ class ModelCart {
         return $total;
     }
 
-    private function emptyCart() {
+    public function emptyCart() {
         foreach($this->productList as $p => $q) {
             $this->removeProduct($p, $q);
         }
     }
 
     public function convertToOrder() {
-        $order = new ModelOrder(Array(
+        return new ModelOrder(Array(
             'idClient' => $this->idClient,
             'total' => $this->countCartTotal(),
             'orderRows' => $this->productList
         ));
-        if ($order->payOrder() && $order->confirmOrder()) {
-            $this->emptyCart();
-            return $order;
-        }
-        return false;
     }
 }
 ?>

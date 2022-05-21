@@ -82,7 +82,7 @@ $pdf->Cell(120, 10, 'Total', 1, 0);
 $pdf->Cell(40, 10, ''.$order->getTotal(), 1, 1);
 $pdf->Ln(10);
 $pdf->Cell(20);
-$pdf->Cell(35, 10, 'Payment Date:', 'B', 0);
+$pdf->Cell(35, 10, 'Payment Date and Time:', 'B', 0);
 $pdf->SetFont('Times','I',12);
 $pdf->Cell(65, 10, $order->getDate(), 'B', 1, 'R');
 $pdf->SetFont('Times','I',16);

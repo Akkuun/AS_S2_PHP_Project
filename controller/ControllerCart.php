@@ -61,11 +61,22 @@ class ControllerCart {
         $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
         if (!empty($cart->getProductList())) {
             $order = $cart->convertToOrder();
-            if ($order) {
-                $view='orderConfirmed';
-                $pageTitle="Order Confirmation";
-                require self::getPathToView();
-            }
+            $order->createOrder();
+            $view='orderPayment';
+            $pageTitle="Payment";
+            require self::getPathToView();
+        }
+    }
+
+    public static function confirmOrder() {
+        $order = ModelOrder::getLastOrderByClientId($_SESSION['idClient']);
+        if ($order && isset($_GET['orderId']) && $order->getId() == $_GET['orderId']) {
+            $order->confirmOrder();
+            $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
+            $cart->emptyCart();
+            $view='orderConfirmed';
+            $pageTitle="Order Confirmation";
+            require self::getPathToView();
         }
     }
 
