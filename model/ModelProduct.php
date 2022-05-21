@@ -69,6 +69,24 @@ class ModelProduct{
         return $origin[0];
     }
 
+    public function getTags(){
+        require_once File::build_path(['model', 'ModelTag.php']);
+
+        $query = Model::getPDO()->prepare('SELECT * FROM tags t
+            WHERE EXISTS (
+                SELECT idTag FROM owns o
+                WHERE o.idTag = t.id
+                AND o.idProducts = ?
+            )');
+
+        $query->execute([$this->id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelTag');
+
+        $tags = $query->fetchAll();
+
+        return $tags;
+    }
+
     public function save($idOrigin, $idCategory){
         $query = Model::getPDO()->prepare('INSERT INTO products
             (name, description, price, image, idOrigin, idCategory, quantity)
@@ -151,14 +169,21 @@ class ModelProduct{
                 $this->getId()]);
     }
 
-    public static function getAllProductByTag($idTag){
-        $query = Model::getPDO()->prepare('SELECT * FROM products p
+    public static function getAllProductByTag($idTags){
+        $sql = 'SELECT * FROM products p
             WHERE EXISTS (
                 SELECT * FROM owns o
-                WHERE idTag = ?
-                AND o.idProducts = p.id
-            )');
-        $query->execute([$idTag]);
+                WHERE o.idProducts = p.id AND (';
+
+        foreach ($idTags as $key => $value){
+            $sql .= " o.idTag = $value OR ";
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= "))";
+
+        $query = Model::getPDO()->prepare($sql);
+        $query->execute();
         $query->setFetchMode(PDO::FETCH_CLASS, 'ModelProduct');
 
         $products = $query->fetchAll();

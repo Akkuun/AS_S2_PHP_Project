@@ -1,37 +1,55 @@
-<form method="post" action="?action=registering&controller=customers">
-    <fieldset>
-        <legend>Sign up :</legend>
+<?php
+session_start();
+?>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../src/styles/styles.css">
+    <script src="../../src/scripts/scripts.js"></script>
+    <title>Authentification</title>
+</head>
+<body id="LoginScreen">
 
-        <p>
-            <label for="login">Login :</label>
-            <input type="text" id="login" name="login" placeholder="toto" required>
-        </p>
-        <p>
-            <label for="password">Password :</label>
-            <input type="password" id="password" name="password" required>
-        </p>
-        <p>
-            <label for="email">Email :</label>
-            <input type="email" id="email" name="email" placeholder="xyz@gmail.com" required>
-            <label for="emailConfirmation">Email :</label>
-            <input type="email" id="emailConfirmation" name="emailConfirmation" placeholder="xyz@gmail.com" required>
-        </p>
-        <p>
-            <label for="address">Address :</label>
-            <input type="text" id="address" name="address" placeholder="Montpellier">
-        </p>
-        <p>
-            <label for="phone">Phone number :</label>
-            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="0601020304">
-        </p>
-        <p>
-            <input type="submit" value="Sign in">
-        </p>
-        <?php
-        if (isset($_SESSION['errorRegistering'])){
-            echo "<p>".$_SESSION['errorRegistering']."</p>";
-            unset($_SESSION['errorRegistering']);
-        }
-        ?>
-    </fieldset>
-</form>
+<div id="CenterSquare">
+
+
+    <div id="LeftPart">
+
+        <img src="../../src/images/productsPictures/cake_minecraft.gif" alt="backgound" id="background_login">
+    </div>
+    <div id="RightPart">
+        <form method="post" action='?action=logIn&controller=customers'>
+            <div id="Title">Member Login</div>
+            <div class="verticlal">
+                <div class="horizontal">
+                    <div><input type="text" placeholder="Email or login" class="Information" name="login" required></div>
+
+                </div>
+                <div class="horizontal">
+                    <div><input type="password" placeholder="Password" name="password" class="Information"></div>
+
+                    <div><input type="email" placeholder="xyz@gmail.com" name="password" class="Information" required></div>
+                    <input type="email" id="emailConfirmation" name="emailConfirmation" placeholder="confimation email" required>
+                    <input type="text" id="address" name="address" placeholder="Adresse">
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="Phone Number">
+
+                    <input type="submit" value="sign in" id="buttonLogin"/>
+                    <div class="verticlal">
+                        <div id="forgottenID"><a href="https://webinfo.iutmontp.univ-montp2.fr/~dubanm/upload/Erebor-store/view/user/authentification.php"> go to log In</div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+
+</div>
+
+</body>
+</html>

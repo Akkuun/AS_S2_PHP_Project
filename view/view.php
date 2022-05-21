@@ -62,6 +62,7 @@ if (!isset($_SESSION['login'])) {
                 <td>" . htmlspecialchars($_SESSION['login']) . "</td>
                 <td><a href='?controller=customers&action=logOut'>Log out</a></td>
               </tr>";
+
     echo "</table>";
 }
 if (isset($_SESSION['error'])) {
@@ -85,9 +86,14 @@ if (isset($_SESSION['error'])) {
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="view/user/authentification.php">Connexion</a>
-                        </li>
+                        <?php if (isset($_SESSION['idClient'])) {
+                            echo "<li class='nav-item'>
+                            <a class='nav-link' href='view/user/authentification.php'>Connexion</a>
+                        </li>";
+                            }
+
+                        ?>
+
                         <li class="nav-item">
                             <a class="nav-link" href="?action=read&controller=cart">Cart</a>
                         </li>
@@ -102,10 +108,23 @@ if (isset($_SESSION['error'])) {
                                     echo "<li> <a class='dropdown-item' href='#'>".$category->getName()."</a></li>";
                                 }
                                 ?>
-
                             </ul>
                         </li>
-                    </ul>
+                        <?php
+                        if (isset($_SESSION['idClient'])) {
+                            echo " <li class='nav-item'>
+                            <a class='nav-link' href='view/user/authentification.php'>Connexion</a>
+                        </li>
+                        
+                       
+
+
+                        <li class='nav-item'>
+                            <a class='nav-link' href='?controller=customers&action=logOut'>log Out</a>
+                        </li>";
+                        }
+                     ?>
+                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -141,12 +160,9 @@ if (isset($_SESSION['error'])) {
 <body>
 
 <div class="flex-container">
-
-
     <?php
     require File::build_path(["view", self::$controller, "$view.php"]);
     ?>
-
 </div>
 </body>
 <footer>

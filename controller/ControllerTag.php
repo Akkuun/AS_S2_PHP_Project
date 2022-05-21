@@ -48,4 +48,29 @@
                 ControllerProduct::readAll();
             }
         }
+
+        public static function filter(){
+            $view = 'filter';
+            $pageTitle = 'Filter by tag';
+
+            require_once File::build_path(['view', 'view.php']);
+        }
+
+        public static function removeTag(){
+            if(isset($_POST['idPdt']) && !empty($_POST['tags']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+                ModelTag::removeProductTag($_POST['idPdt'], $_POST['tags']);
+
+                require_once File::build_path(['controller', 'ControllerProduct.php']);
+                ControllerProduct::readAll();
+            }
+        }
+
+        public static function addTag(){
+            if (isset($_POST['idPdt']) && !empty($_POST['tags']) && isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+                ModelTag::addTag($_POST['idPdt'], $_POST['tags']);
+
+                require_once File::build_path(['controller', 'ControllerProduct.php']);
+                ControllerProduct::readAll();
+            }
+        }
     }

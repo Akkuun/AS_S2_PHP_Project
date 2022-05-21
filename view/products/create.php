@@ -65,7 +65,7 @@
             ?>
         </p>
         <p>
-            <input type="submit" value="Envoyer" />
+            <input type="submit" value="Send" />
         </p>
     </fieldset>
 </form>
