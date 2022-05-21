@@ -13,10 +13,9 @@ if (isset($products)) {
                 width='auto' height='auto'/>";
         echo " <div class='card-body text-center mx-auto'>";
         echo " <div class='cvp'>";
-        echo "<h5 class ='card-title font-weight-bold'" .$product->getName() . "</h5>";
+        echo "<p class ='card-title font-weight-bold'><a href='?action=read&name=".$product->getName()."'>" .$product->getName() . "</a></p>";
         echo "<p class='card-text>'" . $product->getPrice() . " €</p>";
-        echo "<a href='#' class='btn details px-auto'>" .$product->getDescription() . "</a><br/>";
-        echo "<a href='?action=addProduct&controller=cart&idProduct=".$product->getId()."'>+</a>";
+        echo "<a href='?action=addProduct&controller=cart&idProduct=".$product->getId()."'>Ajouter au panier</a>";
         if(isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
             echo "<a href='?action=delete&idPct=".rawurlencode($product->getId())."'>Delete</a></li>";
             echo "<a href='?action=update&name=".htmlspecialchars($product->getName())."'>Edit</a>";
