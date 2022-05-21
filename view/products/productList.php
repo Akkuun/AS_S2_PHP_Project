@@ -17,7 +17,7 @@ if (isset($products)) {
         echo "<h5 class ='card-title font-weight-bold'" .$product->getName() . "</h5>";
         echo "<p class='card-text>'" . $product->getPrice() . "</p>";
         echo "<a href='#' class='btn details px-auto'>" .$product->getDescription() . "</a><br/>";
-        echo "<a href='#' class='btn cart px-auto'>+</a>";
+        echo "<a href='' class='btn cart px-auto'>+</a>";
         echo " </div>";
         echo " </div>";
         echo " </div>";
