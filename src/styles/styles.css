@@ -19,6 +19,16 @@
 
 }
 
+header>nav>ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+header>nav>ul>li{
+    margin: 0px 20px;
+}
+
 #LeftPart {
     display: flex;
     height: auto;
@@ -185,3 +195,68 @@ body {
     margin-left: 10%;
 
 }
+
+body{
+    transition: 0.3s;
+}
+
+
+#res{
+    border: 15px outset #A45D5E;
+    border-radius: 40px 40px 40px 0px;
+    position: fixed;
+    margin-left: 94%;
+    margin-top: 20%;
+}
+/*css de la maquette du sidebar menu pour les reseaux*/
+
+
+.side_bar {
+   top :0;
+    position: fixed;
+    border-radius: 30px;
+    left: 90%;
+    width: 20%;
+    visibility: visible;
+    height: 100%;
+    transition: 0.7s;
+    background-color: black;
+    color: black;
+    text-align: center;
+    justify-content: center;
+}
+.side_bar a {
+    margin-top: 40%;
+    display: block;
+    flex-direction: row;
+    border: green dashed;
+    padding-right: 40%;
+    color: white;
+
+}
+
+
+.side_bar .closebtn {
+    position: absolute;
+    margin-top: 20%;
+    left: 10%;
+    font-size: 36px;
+    transition: 0.5s;
+    border: yellow dashed;
+
+}
+
+#button {
+    position: fixed;
+    left: 88%;
+    top: 40%;
+    color: white;
+    border: blue dashed;
+
+}
+
+#loginView{
+
+margin-top: 30%;
+}
+
