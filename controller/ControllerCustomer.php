@@ -65,6 +65,16 @@ class ControllerCustomer{
                 $_SESSION['errorRegistering'] = "Email already used";
             }
 
+            require_once File::build_path(['model', 'ModelMail.php']);
+            $mail = new ModelMail(['to' => $_POST['email'],
+                'subject' => 'Registeration to Erebor Store',
+                'message' => 'Congratulations ! you\'re successfully registered to Erebor store !',
+                'header' => ['From' => 'noreply@erebor-store.com']]);
+
+            if (!$mail->send()){
+                $_SESSION['errorRegistering'] = "There was a problem with your adress mail.";
+            }
+
             if (isset($_SESSION['errorRegistering'])){
                 self::signUp();
             } else {

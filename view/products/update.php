@@ -72,6 +72,55 @@ if (isset($product)) {
         </p>
     </fieldset>
 </form>";
+            echo "<form method='post' action='?action=removeTag&controller=tags'>
+            <legend>Select a tag to remove it : </legend>
+                <fieldset>";
+                $tags = $product->getTags();
+
+                if (empty($tags)){
+                    echo "No tags for this product";
+                } else {
+                    foreach ($tags as $key => $tag){
+                        $nameToLower = htmlspecialchars(strtolower($tag->getNameTag));
+                        echo "<div>";
+                        echo "<input type='checkbox' id='$nameToLower' name='tags[]' value='{$tag->getId()}'";
+                        echo "<label for='$nameToLower'>".$tag->getNameTag()."</label>";
+                        echo "</div>";
+                    }
+                }
+            echo "<p>
+                <input type='text' name='idPdt' value='".htmlspecialchars($product->getId())."' hidden>
+                <p/>
+                 <p>
+                   <input type='submit' value='Remove'>
+                </p>";
+            echo "</fieldset>
+            </form>";
+    echo "<form method='post' action='?action=addTag&controller=tags'>
+            <legend>Select a tag to add it : </legend>
+                <fieldset>";
+            require_once File::build_path(['model', 'ModelTag.php']);
+    $tags = ModelTag::getAllTagsRemaining($product->getId());
+
+    if (empty($tags)){
+        echo "No tags for this product";
+    } else {
+        foreach ($tags as $key => $tag){
+            $nameToLower = htmlspecialchars(strtolower($tag->getNameTag()));
+            echo "<div>";
+            echo "<input type='checkbox' id='$nameToLower' name='tags[]' value='{$tag->getId()}'";
+            echo "<label for='$nameToLower'>".$tag->getNameTag()."</label>";
+            echo "</div>";
+        }
+    }
+    echo "<p>
+                <input type='text' name='idPdt' value='".htmlspecialchars($product->getId())."' hidden>
+                <p/>
+                 <p>
+                   <input type='submit' value='Add'>
+                </p>";
+    echo "</fieldset>
+            </form>";
 }
 
 

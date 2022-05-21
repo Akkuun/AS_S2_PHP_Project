@@ -89,7 +89,7 @@ class ControllerProduct{
         $products = ModelProduct::getAllProductByCategory($category);
 
         $view = 'productList';
-        $pageTitle = 'All products';
+        $pageTitle = $_GET['category'];
 
         require_once File::build_path(['view', 'view.php']);
     }
@@ -138,5 +138,15 @@ class ControllerProduct{
         self::readAll();
     }
 
+    public static function filteredByTag(){
+        if (!empty($_POST['tags'])){
+            $products = ModelProduct::getAllProductByTag($_POST['tags']);
+            var_dump($products);
 
+            $view = 'productList';
+            $pageTitle = 'Filtered by tags';
+
+            require_once File::build_path(['view', 'view.php']);
+        }
+    }
 }

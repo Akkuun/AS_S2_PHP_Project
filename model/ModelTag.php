@@ -53,5 +53,43 @@ class ModelTag{
         $query = Model::getPDO()->prepare('DELETE FROM tags WHERE id = ?');
         $query->execute([$this->id]);
     }
+
+    public static function removeProductTag($idPdct, $idTags){
+        $sql = 'DELETE FROM owns
+                    WHERE idPdct = ? AND (';
+
+        foreach($idTags as $key => $tag){
+            $sql.='idTag = $tag OR';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql.=')';
+
+        $query = Model::getPDO()->prepare($sql);
+        $query->execute([$idPdct]);
+    }
+
+    public static function getAllTagsRemaining($idProduct){
+        $query = Model::getPDO()->prepare("SELECT * FROM tags t
+            WHERE NOT EXISTS(
+                SELECT idTag fROM owns o
+                WHERE o.idTag = t.id
+                AND o.idProducts = ?
+            )");
+
+        $query->execute([$idProduct]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'ModelTag');
+
+        $tags = $query->fetchAll();
+
+        return $tags;
+    }
+
+    public static function addTag($idProduct, $idTags){
+        foreach($idTags as $key => $tag){
+            $query = Model::getPDO()->prepare('INSERT INTO owns VALUES(? , ?)');
+            $query->execute([$tag, $idProduct]);
+        }
+    }
 }
 ?>

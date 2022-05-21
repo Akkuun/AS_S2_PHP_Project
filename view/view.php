@@ -68,12 +68,8 @@
                     echo "<li><a href='?action=filterByCategory&category=".htmlspecialchars($category->getId())."'>".htmlspecialchars($category->getName())."</a></li>";
                 }
             ?>
-            <li>Tags</li>
+            <li><a href="?action=filter&controller=tags">Tags</a></li>
             <?php
-                $tags = ModelTag::getAllTags();
-                foreach ($tags as $key => $tag){
-                    echo "<li><a href='?action=getAllProductByTag&tag=".htmlspecialchars($tag->getId())."'>".htmlspecialchars($tag->getNameTag())."</a></li>";
-                }
                 if (isset($_SESSION['idClient'])){
                     echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
                     if ($_SESSION['type'] == 'admin'){
