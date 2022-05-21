@@ -1,20 +1,32 @@
+
 <?php
 require_once File::build_path(['model', 'ModelProduct.php']);
 
-if (isset($products)){
+if (isset($products)) {
     foreach ($products as $key => $product) {
-        echo "<div class='product'>";
-        echo "<img src='./src/images/productsPictures/" . $product->getImage()."'.>";
-        echo "<ul>
-            <li><a href='?action=read&name=".rawurlencode($product->getName())."'>".htmlspecialchars($product->getName())."</a></li>
-            <li>".htmlspecialchars($product->getPrice())."</li>";
-        echo "<li><a href='?action=addProduct&controller=cart&idProduct=".$product->getId()."'>+</a></li>";
-        echo "</ul>";
+        $img=$product->getImage();
+        echo "<div class='flex-item'>";
+        echo "<div class='carre'>";
+        echo "<div class='card mx-auto col-md-3 col-10 mt-5'>";
+        echo "<img class='mx-auto img-thumbnail'
+                src='./src/images/productsPictures/$img'
+                width='auto' height='auto'/>";
+        echo " <div class='card-body text-center mx-auto'>";
+        echo " <div class='cvp'>";
+        echo "<h5 class ='card-title font-weight-bold'" .$product->getName() . "</h5>";
+        echo "<p class='card-text>'" . $product->getPrice() . " €</p>";
+        echo "<a href='#' class='btn details px-auto'>" .$product->getDescription() . "</a><br/>";
+        echo "<a href='?action=addProduct&controller=cart&idProduct=".$product->getId()."'>+</a>";
         if(isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
             echo "<a href='?action=delete&idPct=".rawurlencode($product->getId())."'>Delete</a></li>";
             echo "<a href='?action=update&name=".htmlspecialchars($product->getName())."'>Edit</a>";
         }
-        echo "</div>";
+        echo " </div>";
+        echo " </div>";
+        echo " </div>";
+        echo " </div>";
+        echo " </div>";
     }
 
 }
+?>

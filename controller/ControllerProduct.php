@@ -88,10 +88,19 @@ class ControllerProduct{
         $category = $_GET['category'];
         $products = ModelProduct::getAllProductByCategory($category);
 
+        foreach ($products as $index => $value) {
+            echo
+                "<p>" . "<li>" . $value->getName() . "</li><li>" .
+                $value->getDescription() . "</li><li>" .
+                $value->getPrice() . "</li><img alt='imageProduit' src='./src/images/productsPictures/".$value->getImage()."'></p>";
+        }
+
+
         $view = 'productList';
         $pageTitle = $_GET['category'];
 
         require_once File::build_path(['view', 'view.php']);
+
     }
 
 

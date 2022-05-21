@@ -123,13 +123,11 @@ class ModelCart {
             'total' => $this->countCartTotal(),
             'orderRows' => $this->productList
         ));
-        if (!$order->payOrder()) {
-            return false;
-        }
-        if($order->confirmOrder()) {
+        if ($order->payOrder() && $order->confirmOrder()) {
             $this->emptyCart();
-            return true;
+            return $order;
         }
+        return false;
     }
 }
 ?>
