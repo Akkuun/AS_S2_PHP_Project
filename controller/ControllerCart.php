@@ -8,15 +8,14 @@ class ControllerCart {
     }
 
     public static function read() {
-        if (!isset($_SESSION['idClient'])){
-            $_SESSION['error'] = "Please, log in to access this page.";
-            require_once File::build_path(['controller', 'ControllerProduct.php']);
-            ControllerProduct::readAll();
-        } else {
+        // if (!isset($_SESSION['idClient'])){
+        //     $_SESSION['error'] = "Please, log in to access this page.";
+        //     require_once File::build_path(['controller', 'ControllerProduct.php']);
+        //     ControllerProduct::readAll();
+        // } else {
             $view='productList';
             $pageTitle="Your shopping cart";
             require self::getPathToView();
-        }
     }
 
     public static function error() {
@@ -58,13 +57,21 @@ class ControllerCart {
     }
 
     public static function convertToOrder() {
-        $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
-        if (!empty($cart->getProductList())) {
-            $order = $cart->convertToOrder();
-            $order->createOrder();
-            $view='orderPayment';
-            $pageTitle="Payment";
+        if (!isset($_SESSION['idClient'])){
+            $_SESSION['buying'] = true;
+            $view='login';
+            $pageTitle="Log In";
             require self::getPathToView();
+        }
+        else {
+            $cart = ModelCart::getCartByClientId($_SESSION['idClient']);
+            if (!empty($cart->getProductList())) {
+                $order = $cart->convertToOrder();
+                $order->createOrder();
+                $view='orderPayment';
+                $pageTitle="Payment";
+                require self::getPathToView();
+            }
         }
     }
 

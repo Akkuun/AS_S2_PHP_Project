@@ -9,7 +9,12 @@ class ControllerCustomer
     {
         if (isset($_POST['login']) && isset($_POST['password'])) {
             $customer = ModelCustomer::login($_POST['login'], $_POST['password']);
-            if ($customer) {
+
+            if($customer){
+                if (isset($_SESSION['cart'])) {
+                    $oldcart = $_SESSION['cart'];
+                }
+
                 $_SESSION['idClient'] = $customer->getIdClient();
                 $_SESSION['login'] = $customer->getLogin();
                 $_SESSION['email'] = $customer->getEmail();
@@ -21,15 +26,32 @@ class ControllerCustomer
             } else {
                 $_SESSION['error'] = "Identifiant ou mot de passe incorrect";
             }
-
-            require_once File::build_path(['controller', 'ControllerProduct.php']);
-
-            ControllerProduct::readAll();
+            if (isset($oldcart)) {
+                require_once File::build_path(['model', 'ModelCart.php']);
+                foreach($oldcart as $product => $quantity) {
+                    ModelCart::addProduct($product, $quantity);
+                }
+            }
+            if (isset($_SESSION['buying']) && $_SESSION['buying']) {
+                $_SESSION['buying'] = false;
+                require_once File::build_path(['controller', 'ControllerCart.php']);
+                ControllerCart::convertToOrder();
+            }
+            else {
+                require_once File::build_path(['controller', 'ControllerProduct.php']);
+                ControllerProduct::readAll();
+            }
         }
     }
 
-    public static function logOut()
-    {
+
+
+    public static function logInPage() {
+        require_once File::build_path(['view', 'customers', 'connection.php']);
+    }
+
+    public static function logOut(){
+
         unset($_SESSION);
         session_destroy();
 
@@ -38,12 +60,11 @@ class ControllerCustomer
         ControllerProduct::readAll();
     }
 
-    public static function signUp()
-    {
-        $view = 'signUp';
-        $pageTitle = 'Sign up';
 
-        require_once File::build_path(['view', 'view.php']);
+
+    public static function signUp(){
+        require_once File::build_path(['view', 'customers', 'signUp.php']);
+
     }
 
     public static function registering()
@@ -94,8 +115,11 @@ class ControllerCustomer
 
                 $customer->save();
 
-                self::logIn();
+                self::logInPage();
             }
+        }
+        else {
+            self::signUp();
         }
     }
 
