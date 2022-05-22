@@ -67,21 +67,22 @@ foreach ($order->getOrderRows() as $id => $quantity) {
 	$pdf->Cell(20);
 	$pdf->Cell(40, 10, ''.$quantity, 'R', 0);
 	$pdf->Cell(40, 10, ''.$product->getName(), 'R', 0);
-	$pdf->Cell(40, 10, ''.$product->getPrice(), 'R', 0);
-	$pdf->Cell(40, 10, ''.($product->getPrice() * $quantity), 0, 1);
+	$pdf->Cell(40, 10, ''.number_format($product->getPrice(), 2), 'R', 0);
+	$pdf->Cell(40, 10, ''.number_format($product->getPrice() * $quantity, 2), 0, 1);
 }
 $pdf->Ln(10);
 $pdf->Cell(20);
 $pdf->SetFont('Times','',12);
+$tva = round($order->getTotal() * 0.2, 2);
 $pdf->Cell(120, 10, 'Subtotal', 1, 0);
-$pdf->Cell(40, 10, ''.$order->getTotal() * 0.8, 1, 1);
+$pdf->Cell(40, 10, ''.number_format($order->getTotal() - $tva, 2), 1, 1);
 $pdf->Cell(20);
 $pdf->Cell(120, 10, 'TVA', 1, 0);
-$pdf->Cell(40, 10, ''.$order->getTotal() * 0.2, 1, 1);
+$pdf->Cell(40, 10, ''.number_format($tva, 2), 1, 1);
 $pdf->SetFont('Times','B',12);
 $pdf->Cell(20);
 $pdf->Cell(120, 10, 'Total', 1, 0);
-$pdf->Cell(40, 10, ''.$order->getTotal(), 1, 1);
+$pdf->Cell(40, 10, ''.number_format($order->getTotal(), 2), 1, 1);
 $pdf->Ln(10);
 $pdf->Cell(20);
 $pdf->Cell(35, 10, 'Payment Date and Time:', 'B', 0);
