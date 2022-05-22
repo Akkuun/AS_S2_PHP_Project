@@ -5,7 +5,6 @@
 #CenterSquare {
 
     margin-top: 3%;
-    margin-left: 22%;
     width: 60%;
     height: auto;
     display: flex;
@@ -117,6 +116,9 @@ header>nav>ul>li{
 body {
     background: #E0E0E0;
     transition: 0.3s;
+    background:url(../images/decor/triangle-solid-black-gold.jpg);
+    font-family:'PT Sans',Helvetica, Arial, sans-serif;
+    background-repeat: repeat-y;
 }
 
 div.with-nav {
@@ -196,17 +198,11 @@ div.with-nav {
     flex-wrap:wrap;
 }
 
-.flex-item{
-    margin-left: 10%;
-
-}
-
 
 #res{
     border: 15px outset #A45D5E;
     border-radius: 40px 40px 40px 0px;
     position: fixed;
-    margin-left: 94%;
     margin-top: 20%;
 }
 /*css de la maquette du sidebar menu pour les reseaux*/
