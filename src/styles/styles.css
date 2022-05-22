@@ -101,15 +101,11 @@ header>nav>ul>li{
     height: 10%;
 }
 
-.horizontal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+
 
 .verticlal {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 
@@ -255,4 +251,17 @@ div.with-nav {
 #loginView{
 
 margin-top: 30%;
+}
+
+footer{
+    border: green dashed;
+
+}
+
+.f_text{
+
+align-items: center;
+    display: flex;
+    flex-direction: column;
+
 }

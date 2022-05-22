@@ -200,6 +200,12 @@ if (isset($_SESSION['error'])) {
 </div>
 </body>
 <footer>
-    <p>EREBOR STORE</p>
+   <p> Erebor Store</p>
+    <p> Copyright © 2022</p>
+    <div class="f_text">
+    <a href="">Nous contacter</a>
+        <a> |</a>
+    <a>Private policy </a>
+    </div>
 </footer>
 </html>
