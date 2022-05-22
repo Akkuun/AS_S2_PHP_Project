@@ -116,6 +116,11 @@ header>nav>ul>li{
 
 body {
     background: #E0E0E0;
+    transition: 0.3s;
+}
+
+div.with-nav {
+    margin-top: 100px;
 }
 
 .details {
@@ -194,10 +199,6 @@ body {
 .flex-item{
     margin-left: 10%;
 
-}
-
-body{
-    transition: 0.3s;
 }
 
 

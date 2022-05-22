@@ -31,7 +31,7 @@
                     <input type="submit" value="Log in" id="buttonLogin">
                     <div class="verticlal">
                         <div id="forgottenID"><a href=""> forgotten Username / Password ?</div>
-                        <div id="createAccount"> <a href='./customers/signUp.php'>Create your account -></div>
+                        <div id="createAccount"> <a href='?action=signUp&controller=customers'>Create your account -></div>
                     </div>
                 </div>
             </div>

@@ -21,54 +21,6 @@ echo "<html>
 </head>
 
 <header>";
-
-if (!isset($_SESSION['login'])) {
-    echo "<form method='post' action='?action=logIn&controller=customers'>
-                <table>
-                    <tr>
-                        <td>
-                            <label for='login'>Login :</label>
-                        </td>
-                        <td>
-                            <label for='password'>Password :</label>                   
-                        </td>
-                    </tr>
-                    <tr>    
-                        <td>                
-                            <input type='text' id='login' name='login'>
-                        </td>
-                        <td>
-                            <input type='password' id='password' name='password'>
-                        <td>
-                        <td>
-                            <input type='submit' value='Log in'>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Not registered ? <a href='?controller=customers&action=signUp'>Click here</a>
-                        </td>
-                    </tr>
-                </table>
-               </form>";
-} else {
-    require_once File::build_path(['model', 'ModelCustomer.php']);
-
-    echo "<table id='loginView'>";
-    echo "
-                <td><img src=''></td>
-              </tr>
-              <tr>
-                <td>" . htmlspecialchars($_SESSION['login']) . "</td>
-                <td><a href='?controller=customers&action=logOut'>Log out</a></td>
-              </tr>";
-
-    echo "</table>";
-}
-if (isset($_SESSION['error'])) {
-    echo "<p>" . htmlspecialchars($_SESSION['error']) . "</p>";
-    unset($_SESSION['error']);
-}
 ?>
 <nav class="navbar bg-light fixed-top">
 
@@ -84,11 +36,11 @@ if (isset($_SESSION['error'])) {
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="">Home</a>
                         </li>
-                        <?php if (isset($_SESSION['idClient'])) {
+                        <?php if (!isset($_SESSION['idClient'])) {
                             echo "<li class='nav-item'>
-                            <a class='nav-link' href='view/user/authentification.php'>Connexion</a>
+                            <a class='nav-link' href='?action=logInPage&controller=customers'>Connexion</a>
                         </li>";
                             }
 
@@ -110,18 +62,35 @@ if (isset($_SESSION['error'])) {
                                 ?>
                             </ul>
                         </li>
+                        <!-- <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Search by tag
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                                <?php
+                                //$categories = ModelCategory::getAllCategories();
+                                //foreach ($categories as $key => $category) {
+                                //    echo "<li> <a class='dropdown-item' href='#'>".$category->getName()."</a></li>";
+                                //}
+                                ?>
+                            </ul>
+                        </li> -->
                         <?php
                         if (isset($_SESSION['idClient'])) {
-                            echo " <li class='nav-item'>
-                            <a class='nav-link' href='view/user/authentification.php'>Connexion</a>
-                        </li>
-                        
-                       
-
-
-                        <li class='nav-item'>
-                            <a class='nav-link' href='?controller=customers&action=logOut'>log Out</a>
-                        </li>";
+                            echo "
+                            <li class='nav-item'>
+                                <a class='nav-link' href='?controller=customers&action=logOut'>Log Out</a>
+                            </li>";
+                            echo "
+                            <li class='nav-item'>
+                                <a class='nav-link' href='?action=read&controller=customers'>My Profile</a>
+                            </li>";
+                            if ($_SESSION['type'] == 'admin') {
+                                echo "
+                                <li class='nav-item'>
+                                    <a class='nav-link' href='?action=admin&controller=customers'>Admin</a>
+                                </li>";
+                            }
                         }
                      ?>
                      </ul>
@@ -133,7 +102,14 @@ if (isset($_SESSION['error'])) {
             </div>
         </div>
 </nav>
-<br><br><br><br>
+
+<?php
+if (isset($_SESSION['error'])) {
+    echo "<p>" . htmlspecialchars($_SESSION['error']) . "</p>";
+    unset($_SESSION['error']);
+}
+?>
+<!-- <br><br><br><br>
     <ul>
         <li><a href="?action=readAll">Products</a></li>
         <li><a href="?action=read&controller=cart">Cart</a></li>
@@ -143,23 +119,23 @@ if (isset($_SESSION['error'])) {
         ?>
         <li>Tags</li>
         <?php
-        $tags = ModelTag::getAllTags();
-        foreach ($tags as $key => $tag) {
-            echo "<li><a href='?action=getAllProductByTag&tag=" . htmlspecialchars($tag->getId()) . "'>" . htmlspecialchars($tag->getNameTag()) . "</a></li>";
-        }
-        if (isset($_SESSION['idClient'])) {
-            echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
-            if ($_SESSION['type'] == 'admin') {
-                echo "<li><a href='?action=admin&controller=customers'>Admin</a></li>";
-            }
-        }
+        // $tags = ModelTag::getAllTags();
+        // foreach ($tags as $key => $tag) {
+        //     echo "<li><a href='?action=getAllProductByTag&tag=" . htmlspecialchars($tag->getId()) . "'>" . htmlspecialchars($tag->getNameTag()) . "</a></li>";
+        // }
+        // if (isset($_SESSION['idClient'])) {
+        //     echo "<li><a href='?action=read&controller=customers'>My Profile</a></li>";
+        //     if ($_SESSION['type'] == 'admin') {
+        //         echo "<li><a href='?action=admin&controller=customers'>Admin</a></li>";
+        //     }
+        // }
         ?>
-    </ul>
+    </ul> -->
 
 </header>
 <body>
 
-<div class="flex-container">
+<div class="container-md with-nav">
     <?php
     require File::build_path(["view", self::$controller, "$view.php"]);
     ?>
