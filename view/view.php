@@ -46,7 +46,7 @@ if (!isset($_SESSION['login'])) {
                     </tr>
                     <tr>
                         <td>
-                            Not registered ? <a href='?controller=customers&action=signUp'>Click here</a>
+                            Not registered ? <a href='view/user/authentification.php'>Click here</a>
                         </td>
                     </tr>
                 </table>
@@ -86,13 +86,13 @@ if (isset($_SESSION['error'])) {
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
-                        <?php if (isset($_SESSION['idClient'])) {
-                            echo "<li class='nav-item'>
-                            <a class='nav-link' href='view/user/authentification.php'>Connexion</a>
-                        </li>";
-                            }
 
-                        ?>
+                            <li class="nav-item">
+                            <a class="nav-link" href="view/user/authentification.php">Connexion</a>
+                        </li>
+
+
+
 
                         <li class="nav-item">
                             <a class="nav-link" href="?action=read&controller=cart">Cart</a>

@@ -1,13 +1,15 @@
 <?php
 require_once File::build_path(['model', 'ModelCustomer.php']);
 
-class ControllerCustomer{
+class ControllerCustomer
+{
     static $controller = 'customers';
 
-    public static function logIn(){
-        if (isset($_POST['login']) && isset($_POST['password'])){
+    public static function logIn()
+    {
+        if (isset($_POST['login']) && isset($_POST['password'])) {
             $customer = ModelCustomer::login($_POST['login'], $_POST['password']);
-            if($customer){
+            if ($customer) {
                 $_SESSION['idClient'] = $customer->getIdClient();
                 $_SESSION['login'] = $customer->getLogin();
                 $_SESSION['email'] = $customer->getEmail();
@@ -26,7 +28,8 @@ class ControllerCustomer{
         }
     }
 
-    public static function logOut(){
+    public static function logOut()
+    {
         unset($_SESSION);
         session_destroy();
 
@@ -35,19 +38,21 @@ class ControllerCustomer{
         ControllerProduct::readAll();
     }
 
-    public static function signUp(){
+    public static function signUp()
+    {
         $view = 'signUp';
         $pageTitle = 'Sign up';
 
         require_once File::build_path(['view', 'view.php']);
     }
 
-    public static function registering(){
+    public static function registering()
+    {
         if (isset($_POST['login']) && isset($_POST['password'])
-            && isset($_POST['email']) && isset($_POST['emailConfirmation'])){
-            if ($_POST['email'] != $_POST['emailConfirmation']){
+            && isset($_POST['email']) && isset($_POST['emailConfirmation'])) {
+            if ($_POST['email'] != $_POST['emailConfirmation']) {
                 $_SESSION['errorRegistering'] = "Write the same email twice.";
-            } else if (strlen($_POST['password']) < 7){
+            } else if (strlen($_POST['password']) < 7) {
                 $_SESSION['errorRegistering'] = "Your password should be 7 characters long.";
             }
 
@@ -59,9 +64,9 @@ class ControllerCustomer{
             $query->execute([$_POST['email']]);
             $isMail = $query->fetchAll();
 
-            if (count($isLogin) > 0){
+            if (count($isLogin) > 0) {
                 $_SESSION['errorRegistering'] = "Login already used";
-            } else if (count($isMail) > 0){
+            } else if (count($isMail) > 0) {
                 $_SESSION['errorRegistering'] = "Email already used";
             }
 
@@ -71,11 +76,11 @@ class ControllerCustomer{
                 'message' => 'Congratulations ! you\'re successfully registered to Erebor store !',
                 'header' => ['From' => 'noreply@erebor-store.com']]);
 
-            if (!$mail->send()){
+            if (!$mail->send()) {
                 $_SESSION['errorRegistering'] = "There was a problem with your adress mail.";
             }
 
-            if (isset($_SESSION['errorRegistering'])){
+            if (isset($_SESSION['errorRegistering'])) {
                 self::signUp();
             } else {
                 $customer = new ModelCustomer([
@@ -94,8 +99,9 @@ class ControllerCustomer{
         }
     }
 
-    public static function read(){
-        if (isset($_SESSION['idClient'])){
+    public static function read()
+    {
+        if (isset($_SESSION['idClient'])) {
             $view = 'profile';
             $pageTitle = $_SESSION['login'];
 
@@ -106,8 +112,9 @@ class ControllerCustomer{
         }
     }
 
-    public static function admin(){
-        if (isset($_SESSION['type']) && $_SESSION['type'] == 'admin'){
+    public static function admin()
+    {
+        if (isset($_SESSION['type']) && $_SESSION['type'] == 'admin') {
             $view = 'admin';
             $pageTitle = 'Admin page';
 

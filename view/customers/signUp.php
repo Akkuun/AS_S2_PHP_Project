@@ -38,7 +38,7 @@ session_start();
 
                     <input type="submit" value="sign in" id="buttonLogin"/>
                     <div class="verticlal">
-                        <div id="forgottenID"><a href="https://webinfo.iutmontp.univ-montp2.fr/~dubanm/upload/Erebor-store/view/user/authentification.php"> go to log In</div>
+                        <div id="forgottenID"><a href="../user/authentification.php"> go to log In</div>
 
                     </div>
                 </div>

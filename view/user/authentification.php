@@ -31,7 +31,7 @@ session_start();
                 <div class="horizontal">
                     <div><input type="password" placeholder="Password" name="password" class="Information"></div>
                     <div><img id="icon_password" src="../../src/images/PageIcons/icon_password.jpg"></div>
-                    <input type="submit" value="Log in" id="buttonLogin">
+                    <input type="submit" value="Log in" id="buttonLogin" >
                     <div class="verticlal">
                         <div id="forgottenID"><a href=""> forgotten Username / Password ?</div>
                         <div id="createAccount"> <a href='../customers/signUp.php'>Create your account -></div>
